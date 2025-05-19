@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Mon May 19 2025 23:06:19 GMT+0000 (Coordinated Universal Time)  -->
+<!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Mon May 19 2025 23:28:29 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="682b7e84a37f1c21053d0196" data-wf-site="682b7e84a37f1c21053d018d">
 
 <head>
@@ -48,44 +48,52 @@
         <div class="tabs-content w-tab-content">
           <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active">
             <section class="config-step-2">
-              <div class="div-block-10">
-                <h1 class="heading-4">Prawie gotowe...</h1>
-              </div>
-              <div class="div-block-9">
-                <p class="paragraph">Prawie gotowe! Teraz tylko powiąż bota z Twoim kontem klikając w ten link!</p>
-              </div>
-              <div class="div-block-7">
-                <div class="form-block w-form">
-                  <label for="name-2" class="field-label"><strong>Otwórz bota w telegramie:</strong></label>
-                  <a id="tg-button" class="submit-button w-button" target="_blank">Podłącz bota</a>
-                  <div class="w-form-done">
-                    <div>Google sheet został zaktualizowany!</div>
-                  </div>
-                  <div class="w-form-fail">
-                    <div class="text-block">Coś poszło nie tak podczas wysyłania formularza</div>
+              <div class="prawiegotowewrapper">
+                <div class="div-block-10">
+                  <h1 class="heading-4">Prawie gotowe...</h1>
+                </div>
+                <div class="div-block-9">
+                  <p class="paragraph">Prawie gotowe! Teraz tylko powiąż bota z Twoim kontem klikając w ten link!</p>
+                </div>
+                <div class="div-block-7">
+                  <div class="form-block w-form">
+                    <form id="wf-form-Google-sheets-link" ...>
+                      <label for="name-2"><strong>Otwórz bota w telegramie:</strong></label>
+                      <div class="div-block-16">
+                        <a id="tg-button" class="submit-button w-button" target="_blank">Podłącz bota</a>
+                      </div>
+                    </form>
+                    <div class="w-form-done">
+                      <div>Google sheet został zaktualizowany!</div>
+                    </div>
+                    <div class="w-form-fail">
+                      <div class="text-block">Coś poszło nie tak podczas wysyłania formularza</div>
+                    </div>
                   </div>
                 </div>
               </div>
             </section>
             <section class="config-step-3">
-              <div class="div-block-10">
-                <h1 class="heading-4">Bot działa</h1>
-              </div>
-              <div class="div-block-9">
-                <p class="paragraph">Od teraz AI Przeanalizuje każdą Twoją wiadomość, wyciągnie Twoje koszta i podsumuje
-                  je w tabeli! Tutaj lista dodatkowym komend: <br>‍</p>
-              </div>
-              <div class="komendy">
-                <div class="div-block-12">
-                  <div class="komenda">Proszę o podsumowanie <span class="text-span-2">lub </span>/podsumowanie</div>
+              <div class="botdzialawrapper">
+                <div class="div-block-10">
+                  <h1 class="heading-4">Bot działa</h1>
                 </div>
-                <div class="opis">- użyj we wiadomości aby otrzymać podsumowanie wydatków</div>
-              </div>
-              <div class="komendy">
-                <div class="div-block-12">
-                  <div class="komenda">Proszę o link <span class="text-span-3">lub</span> <span>/link</span></div>
+                <div class="div-block-9">
+                  <p class="paragraph">Od teraz AI Przeanalizuje każdą Twoją wiadomość, wyciągnie Twoje koszta i
+                    podsumuje je w tabeli! Tutaj lista dodatkowym komend: <br>‍</p>
                 </div>
-                <div class="opis">- użyj we wiadomości aby otrzymać podsumowanie wydatków</div>
+                <div class="komendy">
+                  <div class="div-block-12">
+                    <div class="komenda">Proszę o podsumowanie <span class="text-span-2">lub </span>/podsumowanie</div>
+                  </div>
+                  <div class="opis">- użyj we wiadomości aby otrzymać podsumowanie wydatków</div>
+                </div>
+                <div class="komendy">
+                  <div class="div-block-12">
+                    <div class="komenda">Proszę o link <span class="text-span-3">lub</span> <span>/link</span></div>
+                  </div>
+                  <div class="opis">- użyj we wiadomości aby otrzymać podsumowanie wydatków</div>
+                </div>
               </div>
             </section>
           </div>
@@ -117,7 +125,7 @@
 
       const user = session.user;
       const { data, error: fetchError } = await supabase
-        .from('users_config') // ← podmień na nazwę Twojej tabeli jeśli inna
+        .from('users_config')
         .select('telegram_id')
         .eq('id', user.id)
         .single();
@@ -127,21 +135,25 @@
         return;
       }
 
+      const configStep2 = document.querySelector(".config-step-2");
+      const configStep3 = document.querySelector(".config-step-3");
+
       if (data && data.telegram_id) {
-        // Telegram już podpięty → od razu pokazujemy krok 3
-        document.querySelector(".config-step-2").style.display = "none";
-        document.querySelector(".config-step-3").style.display = "block";
+        // Telegram podpięty - pokaż krok 3
+        if (configStep2) configStep2.style.display = "none";
+        if (configStep3) configStep3.style.display = "block";
       } else {
-        // Nie podpiął jeszcze → pokaż link do bota
+        // Telegram niepodpięty - pokaż link do bota
         const botUsername = "Persxfinance_bot";
         const tgUrl = `https://t.me/${botUsername}?start=${user.id}`;
 
-        const btn = document.getElementById("tg-button");
-        if (btn) {
-          btn.href = tgUrl;
-          btn.addEventListener("click", () => {
-            document.querySelector(".config-step-2").style.display = "none";
-            document.querySelector(".config-step-3").style.display = "block";
+        const submitBtn = document.querySelector(".submit-button");
+        if (submitBtn) {
+          submitBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.open(tgUrl, "_blank");
+            if (configStep2) configStep2.style.display = "none";
+            if (configStep3) configStep3.style.display = "block";
           });
         }
       }
