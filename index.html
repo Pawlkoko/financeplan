@@ -120,28 +120,34 @@
       }
 
       const user = session.user;
-      const botUsername = "Persxfinance_bot"; // ← podmień na swojego bota
-      const tgUrl = `https://t.me/${botUsername}?start=${user.id}`;
+      const { data, error: fetchError } = await supabase
+        .from('users_config') // ← podmień na nazwę Twojej tabeli jeśli inna
+        .select('telegram_id')
+        .eq('id', user.id)
+        .single();
 
-      const btn = document.getElementById("tg-button");
-      if (btn) {
-        btn.href = tgUrl;
-
-        btn.addEventListener("click", () => {
-          const step2 = document.querySelector(".config-step-2");
-          const step3 = document.querySelector(".config-step-3");
-
-          if (step2 && step3) {
-            step2.style.display = "none";
-            step3.style.display = "block";
-          }
-        });
+      if (fetchError) {
+        console.error("Błąd przy pobieraniu telegram_id:", fetchError);
+        return;
       }
 
-      // Ukryj step 3 domyślnie
-      const step3 = document.querySelector(".config-step-3");
-      if (step3) {
-        step3.style.display = "none";
+      if (data && data.telegram_id) {
+        // Telegram już podpięty → od razu pokazujemy krok 3
+        document.querySelector(".config-step-2").style.display = "none";
+        document.querySelector(".config-step-3").style.display = "block";
+      } else {
+        // Nie podpiął jeszcze → pokaż link do bota
+        const botUsername = "Persxfinance_bot";
+        const tgUrl = `https://t.me/${botUsername}?start=${user.id}`;
+
+        const btn = document.getElementById("tg-button");
+        if (btn) {
+          btn.href = tgUrl;
+          btn.addEventListener("click", () => {
+            document.querySelector(".config-step-2").style.display = "none";
+            document.querySelector(".config-step-3").style.display = "block";
+          });
+        }
       }
     });
   </script>
