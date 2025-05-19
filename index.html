@@ -103,16 +103,21 @@
       </div>
     </div>
   </section>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
   <script>
-    const { createClient } = supabase;
-    const supabaseClient = createClient(
-      'https://vptpascqhmpmgnufevks.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
-    );
-
     document.addEventListener("DOMContentLoaded", async () => {
-      const { data: { session }, error } = await supabaseClient.auth.getSession();
+      if (!window.supabase || !window.supabase.createClient) {
+        alert("Błąd ładowania Supabase. Odśwież stronę lub spróbuj później.");
+        return;
+      }
+
+      const supabase = window.supabase.createClient(
+        'https://vptpascqhmpmgnufevks.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
+      );
+
+      const { data: { session }, error } = await supabase.auth.getSession();
 
       if (!session || !session.user) {
         alert("Musisz być zalogowany.");
@@ -121,7 +126,8 @@
       }
 
       const user = session.user;
-      const { data, error: fetchError } = await supabaseClient
+
+      const { data, error: fetchError } = await supabase
         .from("users_config")
         .select("telegram_id")
         .eq("id", user.id)
@@ -130,18 +136,19 @@
       const configStep2 = document.querySelector(".config-step-2");
       const configStep3 = document.querySelector(".config-step-3");
 
+      if (!configStep2 || !configStep3) return;
+
       if (data && data.telegram_id) {
         configStep2.style.display = "none";
         configStep3.style.display = "block";
       } else {
         const botUsername = "Persxfinance_bot";
         const tgUrl = `https://t.me/${botUsername}?start=${user.id}`;
-        const submitBtn = document.querySelector(".submit-button");
+        const submitBtn = document.querySelector("#tg-button");
 
         if (submitBtn) {
-          submitBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            window.open(tgUrl, "_blank");
+          submitBtn.href = tgUrl;
+          submitBtn.addEventListener("click", () => {
             configStep2.style.display = "none";
             configStep3.style.display = "block";
           });
@@ -149,6 +156,7 @@
       }
     });
   </script>
+
 </body>
 
 </html>
