@@ -307,7 +307,7 @@
   justify-content: center;
   align-items: center;
   height: auto;
-  display: none;
+  display: block;
 }
 
 .komendy {
@@ -379,4 +379,21 @@
 
 .text-span-2, .text-span-3 {
   font-weight: 400;
+}
+
+.div-block-16 {
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  display: flex;
+}
+
+.prawiegotowewrapper {
+  flex-flow: column;
+  display: none;
+}
+
+.botdzialawrapper {
+  display: none;
 }
