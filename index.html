@@ -110,7 +110,7 @@
 
       const user = session.user;
       const { data, error } = await supabase
-        .from("users_config")
+        .from("user_config")
         .select("telegram_id")
         .eq("id", user.id)
         .single();
