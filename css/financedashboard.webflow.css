@@ -276,7 +276,7 @@
   justify-content: center;
   align-items: center;
   height: auto;
-  display: block;
+  display: none;
 }
 
 .div-block-11 {
@@ -307,7 +307,7 @@
   justify-content: center;
   align-items: center;
   height: auto;
-  display: block;
+  display: none;
 }
 
 .komendy {
@@ -391,9 +391,9 @@
 
 .prawiegotowewrapper {
   flex-flow: column;
-  display: none;
+  display: block;
 }
 
 .botdzialawrapper {
-  display: none;
+  display: block;
 }
