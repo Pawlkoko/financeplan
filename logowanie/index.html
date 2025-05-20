@@ -3,119 +3,82 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>FinanceDashboard</title>
+  <title>Finxplaner login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/webflow.css" rel="stylesheet" type="text/css">
-  <link href="css/financedashboard.webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/finxplaner-login.webflow.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-  <section class="header_section">
-    <div class="div-block-14">
-      <h1 class="logo">FINANCEXPLANER</h1>
-      <div class="text-block-3" id="user-email">USERNAME</div>
-    </div>
-  </section>
-
-  <section class="tabs_section">
-    <div class="tabs_wrapper">
-      <div class="tabs w-tabs">
-        <div class="tabs-menu w-tab-menu">
-          <a data-w-tab="Tab 1" class="tab-link-tab-1 w-inline-block w-tab-link w--current">
-            <div>Tab 1</div>
-          </a>
-          <a data-w-tab="Tab 2" class="tab-link-tab-2 w-inline-block w-tab-link">
-            <div>Tab 2</div>
-          </a>
-          <a data-w-tab="Tab 3" class="tab-link-tab-3 w-inline-block w-tab-link">
-            <div>Tab 3</div>
-          </a>
-        </div>
-        <div class="tabs-content w-tab-content">
-          <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active">
-            <section class="config-step-2">
-              <div class="prawiegotowewrapper">
-                <div class="div-block-10">
-                  <h1 class="heading-4">Prawie gotowe...</h1>
-                </div>
-                <div class="div-block-9">
-                  <p class="paragraph">Teraz tylko powiąż bota z Twoim kontem klikając w ten link!</p>
-                </div>
-                <div class="div-block-7">
-                  <div class="form-block w-form">
-                    <form class="form"><label class="field-label"><strong>Otwórz bota w telegramie:</strong></label>
-                      <div class="div-block-16"><input type="submit" class="submit-button w-button" value="Otwórz bota"
-                          id="bot-link-button"></div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <section class="config-step-3" style="display: none;">
-              <div class="botdzialawrapper">
-                <div class="div-block-10">
-                  <h1 class="heading-4">Bot działa</h1>
-                </div>
-                <div class="div-block-9">
-                  <p class="paragraph">AI przeanalizuje wiadomości i zapisze dane do tabeli! Komendy:</p>
-                </div>
-                <div class="komendy">
-                  <div class="div-block-12">
-                    <div class="komenda">Proszę o podsumowanie lub /podsumowanie</div>
-                  </div>
-                  <div class="opis">- aby otrzymać podsumowanie wydatków</div>
-                </div>
-                <div class="komendy">
-                  <div class="div-block-12">
-                    <div class="komenda">Proszę o link lub /link</div>
-                  </div>
-                  <div class="opis">- aby dostać link do arkusza</div>
-                </div>
-              </div>
-            </section>
-          </div>
-          <div data-w-tab="Tab 2" class="w-tab-pane"></div>
-          <div data-w-tab="Tab 3" class="w-tab-pane"></div>
+  <div class="loginwrapper">
+    <div class="login_window_wrapper">
+      <div class="text-block-2">FINANCEXPLANER</div>
+      <div class="div-block">
+        <h1 class="heading">Logowanie</h1>
+        <div class="w-form">
+          <form id="email-input" name="email-form" data-name="Email Form" method="get" class="form">
+            <label for="email" class="field-label">Adres e-mail</label>
+            <input class="text-field w-input" maxlength="256" name="email" placeholder="" type="email" id="email"
+              required="">
+            <input type="button" id="login-button" class="submit-button w-button" value="Zaloguj się">
+          </form>
         </div>
       </div>
+      <a href="#" class="link">Zapomniałeś hasła? Zresetuj je tutaj</a>
     </div>
-  </section>
+    <div class="left-photo">
+      <div>
+        <div class="text-block-3">Oszczędzamy Twój czas, <span class="text-span">pomagając Ci zarządzać</span> Twoimi
+          finansami</div>
+      </div>
+    </div>
+    <div class="right-color"></div>
+  </div>
 
   <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
     const supabase = createClient(
-      "https://vptpascqhmpmgnufevks.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0"
+      'https://vptpascqhmpmgnufevks.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
     );
 
     document.addEventListener("DOMContentLoaded", async () => {
-      const step2 = document.querySelector(".config-step-2");
-      const step3 = document.querySelector(".config-step-3");
-      const emailText = document.getElementById("user-email");
-      const botButton = document.getElementById("bot-link-button");
+      const emailInput = document.getElementById("email");
+      const loginButton = document.getElementById("login-button");
 
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if (!session?.user) {
-        alert("Musisz być zalogowany.");
-        window.location.href = "/";
-        return;
-      }
-
-      const userId = session.user.id;
-      const email = session.user.email;
-      emailText.innerText = email;
-
-      botButton.addEventListener("click", (e) => {
+      loginButton.addEventListener("click", async (e) => {
         e.preventDefault();
-        const link = `https://t.me/Persxfinance_bot?start=${userId}`;
-        window.open(link, "_blank");
+        const email = emailInput.value.trim();
+        if (!email) return alert("Wpisz poprawny e-mail");
 
-        step2.style.display = "none";
-        step3.style.display = "block";
+        const { error } = await supabase.auth.signInWithOtp({
+          email,
+          options: {
+            emailRedirectTo: "https://finance-seven-sigma.vercel.app/configstep1/index.html"
+          }
+        });
+
+        if (error) {
+          alert("Błąd logowania: " + error.message);
+        } else {
+          alert("Sprawdź maila – wysłaliśmy Ci link do logowania.");
+        }
       });
+
+      // Jeśli wróciliśmy z magic linka
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session && session.user) {
+        await supabase.from("users").upsert([
+          {
+            user_id: session.user.id,
+            email: session.user.email,
+            created_at: new Date().toISOString()
+          }
+        ]);
+        window.location.href = "/configstep1/index.html";
+      }
     });
   </script>
 </body>
