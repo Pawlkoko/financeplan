@@ -108,6 +108,31 @@
       const email = session.user.email;
       emailText.innerText = email;
 
+      // Sprawdź, czy użytkownik istnieje
+      const { data: existingUser, error: selectError } = await supabase
+        .from("users")
+        .select("user_id")
+        .eq("user_id", userId)
+        .single();
+
+      if (!existingUser) {
+        const { error: insertError } = await supabase.from("users").upsert([
+          {
+            user_id: userId,
+            email: email,
+            created_at: new Date().toISOString()
+          }
+        ]);
+
+        if (insertError) {
+          console.error("❌ Błąd zapisu do bazy:", insertError.message);
+        } else {
+          console.log("✅ Nowy użytkownik zapisany do bazy!");
+        }
+      } else {
+        console.log("ℹ️ Użytkownik już istnieje w bazie.");
+      }
+
       botButton.addEventListener("click", (e) => {
         e.preventDefault();
         const link = `https://t.me/Persxfinance_bot?start=${userId}`;
