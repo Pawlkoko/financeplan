@@ -68,17 +68,18 @@
       });
 
       // Jeśli wróciliśmy z magic linka
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session && session.user) {
-        await supabase.from("users").upsert([
-          {
-            user_id: session.user.id,
-            email: session.user.email,
-            created_at: new Date().toISOString()
-          }
-        ]);
-        window.location.href = "/configstep1/index.html";
-      }
+      supabase.auth.onAuthStateChange(async (event, session) => {
+        if (session?.user) {
+          await supabase.from("users").upsert([
+            {
+              user_id: session.user.id,
+              email: session.user.email,
+              created_at: new Date().toISOString()
+            }
+          ]);
+          window.location.href = "/configstep1/index.html";
+        }
+      });
     });
   </script>
 </body>
