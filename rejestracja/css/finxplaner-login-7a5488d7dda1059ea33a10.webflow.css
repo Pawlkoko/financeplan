@@ -24,9 +24,13 @@
 }
 
 .text-field {
+  text-align: center;
   background-color: #ffffff1c;
   border: 1px solid #6b6b6b;
   border-radius: 20px;
+  margin-bottom: 10px;
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
 }
 
 .text-field:hover {
@@ -34,11 +38,14 @@
 }
 
 .text-field:focus {
+  color: #fff;
   border: 2px solid #0d88f3;
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
 }
 
 .field-label {
-  color: #fff;
+  color: #acacac;
   font-family: Montserrat, sans-serif;
   font-weight: 500;
 }
@@ -196,6 +203,13 @@
   min-width: 250px;
   max-width: 600px;
   display: block;
+}
+
+.text-block-7 {
+  color: #c2c2c2;
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 @media screen and (max-width: 991px) {
