@@ -94,8 +94,11 @@
           console.log("Błąd:", error);
         } else {
           console.log("✅ Sukces rejestracji!");
-          document.querySelector(".registerformwrapper")?.style.display = "none";
-          document.querySelector(".checkemailanimation")?.style.display = "flex";
+          const formWrapper = document.querySelector(".registerformwrapper");
+          if (formWrapper) formWrapper.style.display = "none";
+
+          const checkAnim = document.querySelector(".checkemailanimation");
+          if (checkAnim) checkAnim.style.display = "flex";
         }
       });
     });
