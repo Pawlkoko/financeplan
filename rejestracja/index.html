@@ -100,8 +100,8 @@
           alert("❌ Błąd: " + error.message);
         } else {
           alert("✅ Rejestracja zakończona. Sprawdź maila!");
-          document.querySelector(".registerformwrapper")?.classList.add("hidden");
-          document.querySelector(".checkemailanimation")?.classList.remove("hidden");
+          document.querySelector(".registerformwrapper")?.style.display = "none";
+          document.querySelector(".checkemailanimation")?.style.display = "flex";
         }
       });
     });
