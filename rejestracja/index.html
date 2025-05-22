@@ -74,12 +74,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const supabase = supabase.createClient(
-        'https://TWOJ_PROJEKT.supabase.co',
-        'TWOJ_PUBLIC_ANON_KEY'
-      );
+    const client = supabase.createClient(
+      'https://vptpascqhmpmgnufevks.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
+    );
 
+    document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("wf-form-Registration-Form");
 
       form.addEventListener("submit", async function (e) {
@@ -88,7 +88,7 @@
         const email = document.getElementById("Email").value;
         const password = document.getElementById("password").value;
 
-        const { data, error } = await supabase.auth.signUp({
+        const { data, error } = await client.auth.signUp({
           email,
           password,
           options: {
@@ -106,16 +106,6 @@
       });
     });
   </script>
-
-  <style>
-    .checkemailanimation {
-      display: none;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-  </style>
 </body>
 
 </html>
