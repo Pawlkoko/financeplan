@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Thu May 22 2025 18:25:29 GMT+0000 (Coordinated Universal Time)  -->
+<!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Thu May 22 2025 18:29:12 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="682b24f1ffaaa2e1e3d1b9e1" data-wf-site="682b24f1ffaaa2e1e3d1b9d8">
 
 <head>
@@ -47,13 +47,13 @@
                 data-wf-page-id="682b24f1ffaaa2e1e3d1b9e1" data-wf-element-id="852c1829-f11b-716f-8943-dc9cca2cd488">
                 <label for="email" class="field-label">Adres e-mail</label><input class="text-field w-input"
                   maxlength="256" name="email" data-name="Email" placeholder="" type="email" id="email"
-                  required=""><label for="email-2" class="field-label">Hasło</label><input class="text-field w-input"
-                  maxlength="256" name="email-2" data-name="Email 2" placeholder="" type="email" id="email-2"
+                  required=""><label for="password" class="field-label">Hasło</label><input class="text-field w-input"
+                  maxlength="256" name="password" data-name="password" placeholder="" type="password" id="password"
                   required=""><input type="submit" data-wait="Please wait..." class="submit-button w-button"
                   value="Zaloguj się">
               </form>
             </div>
-            <a href="https://financeplan-topaz.vercel.app/rejestracja/index.html" class="linkcolor">Nie masz konta?
+            <a href="#https://financeplan-topaz.vercel.app/rejestracja/index.html" class="linkcolor">Nie masz konta?
               Zarejestruj się</a>
           </div>
         </div>
@@ -98,8 +98,9 @@
           // Pokaż animację sukcesu
           const animWrapper = document.querySelector(".logowanieanimation");
           if (animWrapper) animWrapper.style.display = "flex";
+
           console.log("✅ Zalogowano jako:", data.user.email);
-          window.location.href = "/dashboard.html"; // <- zmień na swoją stronę po zalogowaniu
+          window.location.href = "https://financeplan-topaz.vercel.app/"; // <- zmień na swoją stronę po zalogowaniu
         }
       });
     });
