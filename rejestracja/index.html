@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Thu May 22 2025 16:45:32 GMT+0000 (Coordinated Universal Time)  -->
+<!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Thu May 22 2025 17:27:32 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="682f46d67626a3685010b54d" data-wf-site="682f46d67626a3685010b54e">
 
 <head>
@@ -69,52 +69,46 @@
     crossorigin="anonymous"></script>
   <script src="js/webflow.js" type="text/javascript"></script>
 
+
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
   <script>
-    // TODO: Wstaw tutaj swoje dane
     const supabase = supabase.createClient(
       'https://vptpascqhmpmgnufevks.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
     );
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("wf-form-Registration-Form");
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById('email-form');
-      if (!form) return;
-
-      form.addEventListener('submit', async function (e) {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const email = document.getElementById("Email").value;
+        const password = document.getElementById("password").value;
 
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: 'https://google.com'
+            emailRedirectTo: "https://twojastrona.pl/dashboard" // <- zmień na swój URL po potwierdzeniu
           }
         });
 
         if (error) {
           alert("❌ Błąd: " + error.message);
         } else {
-          document.querySelector('.registerformwrapper')?.classList.add('hidden');
-          document.querySelector('.checkemailanimation')?.classList.remove('hidden');
+          // Ukryj formularz
+          document.querySelector(".registerformwrapper").style.display = "none";
+
+          // Pokaż animację
+          document.querySelector(".checkemailanimation").style.display = "block";
         }
       });
     });
   </script>
-  <style>
-    .checkemailanimation {
-      display: none;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-  </style>
-
 </body>
 
 </html>
