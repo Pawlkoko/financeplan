@@ -46,11 +46,11 @@
               <form id="email-form" name="email-form" data-name="Email Form" class="form"
                 data-wf-page-id="682b24f1ffaaa2e1e3d1b9e1" data-wf-element-id="852c1829-f11b-716f-8943-dc9cca2cd488">
                 <label for="email" class="field-label">Adres e-mail</label><input class="text-field w-input"
-                  maxlength="256" name="email" data-name="Email" placeholder="" type="email" id="email"
+                  maxlength="256" name="email" data-name="Email" placeholder="" type="email" id="login-email"
                   required=""><label for="password" class="field-label">Hasło</label><input class="text-field w-input"
-                  maxlength="256" name="password" data-name="password" placeholder="" type="password" id="password"
-                  required=""><input type="submit" data-wait="Please wait..." class="submit-button w-button"
-                  value="Zaloguj się">
+                  maxlength="256" name="password" data-name="password" placeholder="" type="password"
+                  id="login-password" required=""><input type="submit" data-wait="Please wait..."
+                  class="submit-button w-button" value="Zaloguj się">
               </form>
             </div>
             <a href="#https://financeplan-topaz.vercel.app/rejestracja/index.html" class="linkcolor">Nie masz konta?
@@ -80,8 +80,8 @@
       form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const email = document.getElementById("Email").value;
-        const password = document.getElementById("password").value;
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
 
         const { data, error } = await client.auth.signInWithPassword({
           email,
