@@ -91,7 +91,7 @@
         });
 
         if (error) {
-          alert("❌ Błąd: " + error.message);
+          console.log("Błąd:", error);
         } else {
           console.log("✅ Sukces rejestracji!");
           document.querySelector(".registerformwrapper")?.style.display = "none";
