@@ -81,6 +81,16 @@
 
         const email = document.getElementById("Email").value;
         const password = document.getElementById("password").value;
+        // sprawdź czy email już istnieje
+        const { data: existingUsers, error: checkError } = await client
+          .from("user_config")
+          .select("email")
+          .eq("email", email);
+
+        if (existingUsers && existingUsers.length > 0) {
+          alert("Ten adres e-mail jest już zarejestrowany. Zaloguj się lub sprawdź swoją skrzynkę.");
+          return;
+        }
 
         const { data, error } = await client.auth.signUp({
           email,
