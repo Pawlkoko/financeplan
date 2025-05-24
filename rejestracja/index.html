@@ -82,18 +82,24 @@
         const email = document.getElementById("Email").value;
         const password = document.getElementById("password").value;
 
-        // 🔐 Sprawdź, czy użytkownik już istnieje (np. wpisany email)
-        const check = await client.auth.signInWithPassword({
-          email,
-          password: "fakepassword" // celowo błędne hasło
-        });
+        // 🔍 Sprawdź, czy email istnieje w user_config
+        const { data: existingUsers, error: selectError } = await client
+          .from("user_config")
+          .select("email")
+          .eq("email", email);
 
-        if (!check.error || (check.error.message && check.error.message.includes("Invalid login credentials"))) {
-          alert("Ten e-mail jest już zarejestrowany. Zaloguj się lub sprawdź swoją skrzynkę.");
+        if (selectError) {
+          console.error("Błąd sprawdzania e-maila:", selectError.message);
+          alert("Coś poszło nie tak. Spróbuj ponownie później.");
           return;
         }
 
-        // 🧠 Próba rejestracji
+        if (existingUsers && existingUsers.length > 0) {
+          alert("Ten adres e-mail jest już zarejestrowany. Zaloguj się lub sprawdź swoją skrzynkę.");
+          return;
+        }
+
+        // ✉️ Próba rejestracji
         const { data, error } = await client.auth.signUp({
           email,
           password,
@@ -104,17 +110,11 @@
 
         if (error) {
           console.error("❌ Błąd:", error.message);
-
-          if (error.message.includes("User already registered")) {
-            alert("Ten adres e-mail jest już zarejestrowany. Zaloguj się lub sprawdź skrzynkę.");
-          } else {
-            alert("Wystąpił błąd: " + error.message);
-          }
-
+          alert("Błąd rejestracji: " + error.message);
           return;
         }
 
-        // ✅ Sukces – pokaż animację
+        // 🎉 Sukces – pokaż animację
         const formWrapper = document.querySelector(".registerformwrapper");
         if (formWrapper) formWrapper.style.display = "none";
 
