@@ -2,19 +2,44 @@
 <html lang="pl">
 
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   <title>FinanceDashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/webflow.css" rel="stylesheet" type="text/css">
   <link href="css/financedashboard.webflow.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
+<body class="body">
   <section class="header_section">
-    <div class="div-block-14">
-      <h1 class="logo">FINANCEXPLANER</h1>
-      <div class="text-block-3" id="user-email">USERNAME</div>
+    <div class="navbar-logo-left">
+      <div class="navbar-logo-left-container shadow-three w-nav">
+        <div class="container">
+          <div class="navbar-wrapper">
+            <a href="#" class="navbar-brand w-nav-brand">
+              <h1 class="logo">FINA<span class="text-span-4">PLA</span></h1>
+            </a>
+            <nav class="nav-menu-wrapper w-nav-menu">
+              <ul class="nav-menu-two w-list-unstyled">
+                <li>
+                  <div class="div-block-17">
+                    <img src="images/user-icon.svg" loading="lazy" width="20" height="20" alt="" class="image-3">
+                    <div class="text-block-3" id="user-email">...</div>
+                  </div>
+                </li>
+                <li>
+                  <div class="nav-divider"></div>
+                </li>
+                <li><a href="#" class="button-primary w-button">Wyloguj</a></li>
+              </ul>
+            </nav>
+            <div class="menu-button w-nav-button">
+              <div class="icon w-icon-nav-menu"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -23,78 +48,86 @@
       <div class="tabs w-tabs">
         <div class="tabs-menu w-tab-menu">
           <a data-w-tab="Tab 1" class="tab-link-tab-1 w-inline-block w-tab-link w--current">
-            <div>Tab 1</div>
+            <img src="images/configuration.svg" width="15" height="15" alt="">
+            <div class="text-block-5">Konfiguracja bota</div>
           </a>
           <a data-w-tab="Tab 2" class="tab-link-tab-2 w-inline-block w-tab-link">
-            <div>Tab 2</div>
+            <img src="images/sub.svg" width="15" height="15" alt="">
+            <div class="text-block-6">Zarządzaj subskrypcją</div>
           </a>
           <a data-w-tab="Tab 3" class="tab-link-tab-3 w-inline-block w-tab-link">
-            <div>Tab 3</div>
+            <img src="images/comands.svg" width="15" height="15" alt="">
+            <div class="text-block-8">Komendy</div>
           </a>
         </div>
+
         <div class="tabs-content w-tab-content">
           <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active">
             <section class="config-step-2">
-              <div class="prawiegotowewrapper">
-                <div class="div-block-10">
-                  <h1 class="heading-4">Prawie gotowe...</h1>
-                </div>
+              <div class="edytujbotawrapper">
                 <div class="div-block-9">
-                  <p class="paragraph">Teraz tylko powiąż bota z Twoim kontem klikając w ten link!</p>
+                  <h1 class="heading-4">Dodaj lub przypisz nowe konto</h1>
+                  <p class="paragraph">Kliknij guzik i gotowe - bot będzie zaktualizowany.</p>
                 </div>
-                <div class="div-block-7">
-                  <div class="form-block w-form">
-                    <form class="form"><label class="field-label"><strong>Otwórz bota w telegramie:</strong></label>
-                      <div class="div-block-16"><input type="submit" class="submit-button w-button" value="Otwórz bota"
-                          id="bot-link-button"></div>
-                    </form>
+
+                <div class="telegrambuttonwrapper">
+                  <div class="otworzwtgwrapper">
+                    <img width="25" height="25" src="images/Zasób-3.svg" alt="">
+                    <div class="text-block-4">Otwórz bota w Telegramie</div>
                   </div>
+                  <a href="#" id="telegram-btn" class="submit-button w-button">Aktywuj w Telegramie</a>
                 </div>
-              </div>
-            </section>
-            <section class="config-step-3" style="display: none;">
-              <div class="botdzialawrapper">
-                <div class="div-block-10">
-                  <h1 class="heading-4">Bot działa</h1>
-                </div>
-                <div class="div-block-9">
-                  <p class="paragraph">AI przeanalizuje wiadomości i zapisze dane do tabeli! Komendy:</p>
-                </div>
-                <div class="komendy">
-                  <div class="div-block-12">
-                    <div class="komenda">Proszę o podsumowanie lub /podsumowanie</div>
+
+                <div class="telegrambuttonwrapper">
+                  <div class="otworzwwhatsappwrapper">
+                    <img width="30" height="30" src="images/whastapp.svg" alt="">
+                    <div class="text-block-4">Otwórz bota w Whatsappie</div>
                   </div>
-                  <div class="opis">- aby otrzymać podsumowanie wydatków</div>
-                </div>
-                <div class="komendy">
-                  <div class="div-block-12">
-                    <div class="komenda">Proszę o link lub /link</div>
-                  </div>
-                  <div class="opis">- aby dostać link do arkusza</div>
+                  <a href="#" id="whatsapp-btn" class="submit-button w-button">Aktywuj na WhatsApp</a>
                 </div>
               </div>
             </section>
           </div>
-          <div data-w-tab="Tab 2" class="w-tab-pane"></div>
-          <div data-w-tab="Tab 3" class="w-tab-pane"></div>
+
+          <div data-w-tab="Tab 2" class="w-tab-pane">
+            <div class="text-block-7">Tu będzie zarządzanie subskrypcją</div>
+          </div>
+
+          <div data-w-tab="Tab 3" class="w-tab-pane">
+            <h1 class="heading-6">Lista komend</h1>
+            <div class="komendy">
+              <div class="komenda">/podsumowanie</div>
+              <div class="opis">- Otrzymaj podsumowanie wydatków</div>
+            </div>
+            <div class="komendy">
+              <div class="komenda">/link</div>
+              <div class="opis">- Wysyła link do arkusza</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <section class="footer">
+    <div>
+      <div class="text-block-10">© Paweł Kostyra 2025. Wszelkie prawa zastrzeżone.</div>
+    </div>
+  </section>
+
+  <!-- Supabase i logika -->
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
     const supabase = createClient(
       "https://vptpascqhmpmgnufevks.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
     );
 
     document.addEventListener("DOMContentLoaded", async () => {
-      const step2 = document.querySelector(".config-step-2");
-      const step3 = document.querySelector(".config-step-3");
       const emailText = document.getElementById("user-email");
-      const botButton = document.getElementById("bot-link-button");
+      const telegramBtn = document.getElementById("telegram-btn");
+      const whatsappBtn = document.getElementById("whatsapp-btn");
 
       const { data: { session } } = await supabase.auth.getSession();
 
@@ -105,43 +138,39 @@
 
       const userId = session.user.id;
       const email = session.user.email;
-      emailText.innerText = email;
+      window.userId = userId; // można wykorzystać globalnie
 
-      // Sprawdź, czy użytkownik istnieje
-      const { data: existingUser, error: selectError } = await supabase
+      if (emailText) emailText.innerText = email;
+
+      const { data: existingUser } = await supabase
         .from("users")
         .select("user_id")
         .eq("user_id", userId)
         .single();
 
       if (!existingUser) {
-        const { error: insertError } = await supabase.from("users").upsert([
-          {
-            user_id: userId,
-            email: email,
-            created_at: new Date().toISOString()
-          }
-        ]);
-
-        if (insertError) {
-          console.error("❌ Błąd zapisu do bazy:", insertError.message);
-        } else {
-          console.log("✅ Nowy użytkownik zapisany do bazy!");
-        }
-      } else {
-        console.log("ℹ️ Użytkownik już istnieje w bazie.");
+        await supabase.from("users").upsert([{
+          user_id: userId,
+          email: email,
+          created_at: new Date().toISOString()
+        }]);
       }
 
-      botButton.addEventListener("click", (e) => {
+      telegramBtn?.addEventListener("click", (e) => {
         e.preventDefault();
         const link = `https://t.me/Persxfinance_bot?start=${userId}`;
         window.open(link, "_blank");
+      });
 
-        step2.style.display = "none";
-        step3.style.display = "block";
+      whatsappBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const link = `https://wa.me/48123456789?text=START_${userId}`;
+        window.open(link, "_blank");
       });
     });
   </script>
+
+  <script src="js/webflow.js"></script>
 </body>
 
 </html>
