@@ -81,26 +81,19 @@
 
         const email = document.getElementById("Email").value;
         const password = document.getElementById("password").value;
-        // sprawdź czy email już istnieje
-        const { data: existingUsers, error: checkError } = await client
-          .from("user_config")
-          .select("email")
-          .eq("email", email);
 
-        if (existingUsers && existingUsers.length > 0) {
-          alert("Ten adres e-mail jest już zarejestrowany. Zaloguj się lub sprawdź swoją skrzynkę.");
-          return;
-        }
-        // Sprawdź, czy użytkownik już istnieje przez próbę logowania (nie musimy znać hasła)
+        // 🔐 Sprawdź, czy użytkownik już istnieje (np. wpisany email)
         const check = await client.auth.signInWithPassword({
           email,
-          password: "fakepassword" // celowo zły
+          password: "fakepassword" // celowo błędne hasło
         });
 
         if (!check.error || (check.error.message && check.error.message.includes("Invalid login credentials"))) {
           alert("Ten e-mail jest już zarejestrowany. Zaloguj się lub sprawdź swoją skrzynkę.");
           return;
         }
+
+        // 🧠 Próba rejestracji
         const { data, error } = await client.auth.signUp({
           email,
           password,
@@ -110,19 +103,26 @@
         });
 
         if (error) {
-          console.log("❌ Błąd:", error);
-        } else {
-          console.log("✅ Sukces rejestracji!");
+          console.error("❌ Błąd:", error.message);
 
-          // 🎬 Pokaż animację
-          const formWrapper = document.querySelector(".registerformwrapper");
-          if (formWrapper) formWrapper.style.display = "none";
+          if (error.message.includes("User already registered")) {
+            alert("Ten adres e-mail jest już zarejestrowany. Zaloguj się lub sprawdź skrzynkę.");
+          } else {
+            alert("Wystąpił błąd: " + error.message);
+          }
 
-          const checkAnim = document.querySelector(".checkemailanimation");
-          if (checkAnim) checkAnim.style.display = "flex";
+          return;
         }
+
+        // ✅ Sukces – pokaż animację
+        const formWrapper = document.querySelector(".registerformwrapper");
+        if (formWrapper) formWrapper.style.display = "none";
+
+        const checkAnim = document.querySelector(".checkemailanimation");
+        if (checkAnim) checkAnim.style.display = "flex";
       });
     });
+
   </script>
 </body>
 
