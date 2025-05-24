@@ -99,8 +99,7 @@
       const { data: { session } } = await supabase.auth.getSession();
 
       if (!session?.user) {
-        alert("Musisz być zalogowany.");
-        window.location.href = "/";
+        window.location.href = "/login/index.html";
         return;
       }
 
