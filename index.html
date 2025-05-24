@@ -99,7 +99,7 @@
       const { data: { session } } = await supabase.auth.getSession();
 
       if (!session?.user) {
-        window.location.href = "/login/index.html";
+        window.location.href = "/logowanie/index.html";
         return;
       }
 
