@@ -91,7 +91,16 @@
           alert("Ten adres e-mail jest już zarejestrowany. Zaloguj się lub sprawdź swoją skrzynkę.");
           return;
         }
+        // Sprawdź, czy użytkownik już istnieje przez próbę logowania (nie musimy znać hasła)
+        const check = await client.auth.signInWithPassword({
+          email,
+          password: "fakepassword" // celowo zły
+        });
 
+        if (!check.error || (check.error.message && check.error.message.includes("Invalid login credentials"))) {
+          alert("Ten e-mail jest już zarejestrowany. Zaloguj się lub sprawdź swoją skrzynkę.");
+          return;
+        }
         const { data, error } = await client.auth.signUp({
           email,
           password,
