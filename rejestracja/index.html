@@ -95,21 +95,6 @@
         } else {
           console.log("✅ Sukces rejestracji!");
 
-          // 👉 Zapisz usera do tabeli user_config
-          const userId = data.user?.id;
-
-          if (userId) {
-            const { error: insertError } = await client
-              .from("user_config")
-              .insert([{ user_id: userId, email }]);
-
-            if (insertError) {
-              console.error("❌ Błąd zapisu do user_config:", insertError.message);
-            } else {
-              console.log("✅ Zapisano usera do tabeli user_config.");
-            }
-          }
-
           // 🎬 Pokaż animację
           const formWrapper = document.querySelector(".registerformwrapper");
           if (formWrapper) formWrapper.style.display = "none";
