@@ -114,14 +114,14 @@
                       loading="lazy" class="image-2">
                     <div class="text-block-4">Otwórz bota w Telegramie</div>
                   </div>
-                  <a href="#" class="submit-button w-button">Aktywuj w Telegramie</a>
+                  <a href="#" id="telegram-btn" class="submit-button w-button">Aktywuj w Telegramie</a>
                 </div>
                 <div class="telegrambuttonwrapper">
                   <div class="otworzwwhatsappwrapper"><img width="30" height="30" alt="" src="images/whastapp.svg"
                       loading="lazy" class="image">
                     <div class="text-block-4">Otwórz bota w Whatsappie</div>
                   </div>
-                  <a href="#" class="submit-button w-button">Aktywuj na WhasApp</a>
+                  <a href="#" id="whatsapp-btn" class="submit-button w-button">Aktywuj na WhasApp</a>
                 </div>
               </div>
             </section>
@@ -206,6 +206,20 @@
           }
         ]);
       }
+
+      document.querySelector('.button-primary.w-button')?.addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.href = "/logowanie/index.html";
+      });
+
+      const telegramBtn = document.getElementById("telegram-btn");
+
+      telegramBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const botUsername = "Persxfinance_bot"; // ← Zmień na swoją nazwę bota
+        const link = `https://t.me/${botUsername}?start=${userId}`;
+        window.open(link, "_blank");
+      });
     });
   </script>
 </body>
