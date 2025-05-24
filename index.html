@@ -206,7 +206,15 @@
           }
         ]);
       }
+      const whatsappBtn = document.getElementById("whatsapp-btn");
 
+      whatsappBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const userId = session.user.id; // lub `userId` z wcześniej
+        const message = encodeURIComponent(`START_${userId}`);
+        const link = `https://wa.me/48123456789?text=${message}`;
+        window.open(link, "_blank");
+      });
       document.querySelector('.button-primary.w-button')?.addEventListener("click", async () => {
         await supabase.auth.signOut();
         window.location.href = "/logowanie/index.html";
