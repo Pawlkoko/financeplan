@@ -518,20 +518,22 @@
       const prawieWrapper = document.querySelector('.prawiegotowewrapper');
 
       try {
-        const { data: configRow, error } = await supabase
+        const { data: configRows, error } = await supabase
           .from("user_config")
           .select("telegram_id, whatsapp_nr, messenger_id")
           .eq("user_id", userId)
-          .maybeSingle(); // <- ważne! nie rzuci błędu jak nie ma rekordu
+          .limit(1); // <-- ważne: nie maybeSingle, tylko limit(1)
 
         if (error) {
           console.error("Supabase error:", error);
         }
 
-        console.log("Dane user_config z supabase:", configRow);
+        console.log("🔍 Wyniki user_config z supabase:", configRows);
+
+        const configRow = configRows?.[0]; // pierwszy (i jedyny) wynik
 
         const hasTelegram = !!configRow?.telegram_id?.trim?.();
-        const hasWhatsapp = !!configRow?.Whatsapp_Nr?.trim?.();
+        const hasWhatsapp = !!configRow?.whatsapp_nr?.trim?.();
         const hasMessenger = !!configRow?.messenger_id?.trim?.();
 
         const hasAnyBot = hasTelegram || hasWhatsapp || hasMessenger;
