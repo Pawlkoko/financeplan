@@ -325,7 +325,6 @@
 
 .lottie-animation {
   width: 150px;
-  margin-top: 20px;
 }
 
 .otworzwtgwrapper,
@@ -729,6 +728,8 @@
 
 .tab-pane-subskrypcja {
   width: 100%;
+  margin-top: 60px;
+
 }
 
 .tab-pane-tab-5 {
