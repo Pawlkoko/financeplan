@@ -531,7 +531,7 @@
         console.log("Dane user_config z supabase:", configRow);
 
         const hasTelegram = !!configRow?.telegram_id?.trim?.();
-        const hasWhatsapp = !!configRow?.whatsapp_nr?.trim?.();
+        const hasWhatsapp = !!configRow?.Whatsapp_Nr?.trim?.();
         const hasMessenger = !!configRow?.messenger_id?.trim?.();
 
         const hasAnyBot = hasTelegram || hasWhatsapp || hasMessenger;
