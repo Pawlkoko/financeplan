@@ -520,7 +520,7 @@
       try {
         const { data: configRows, error } = await supabase
           .from("user_config")
-          .select("telegram_id, whatsapp_nr, messenger_id")
+          .select("telegram_id, WhatsappNr, messenger_id")
           .eq("user_id", userId)
           .limit(1); // <-- ważne: nie maybeSingle, tylko limit(1)
 
@@ -533,7 +533,7 @@
         const configRow = configRows?.[0]; // pierwszy (i jedyny) wynik
 
         const hasTelegram = !!configRow?.telegram_id?.trim?.();
-        const hasWhatsapp = !!configRow?.whatsapp_nr?.trim?.();
+        const hasWhatsapp = !!configRow?.WhatsappNr?.trim?.();
         const hasMessenger = !!configRow?.messenger_id?.trim?.();
 
         const hasAnyBot = hasTelegram || hasWhatsapp || hasMessenger;
