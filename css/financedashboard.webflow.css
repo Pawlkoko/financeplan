@@ -1916,7 +1916,7 @@
     grid-row-gap: 6px;
     justify-content: flex-start;
     align-items: center;
-    display: none;
+    display: block;
   }
 
   .text-block-8 {
@@ -2156,7 +2156,7 @@
     padding-right: 30px;
   }
 
-  .tabscontent, .tabscontent-withglow {
+  .tabscontent {
     justify-content: center;
     align-items: flex-start;
     margin-top: 15px;
@@ -2164,6 +2164,20 @@
     padding-left: 10px;
     padding-right: 10px;
     position: relative;
+  }
+
+  .tabscontent-withglow {
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 15px;
+    padding-bottom: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+  }
+
+  .premiumversion {
+    display: none;
   }
 
   .subscriptionstatuswrapper-copy {
