@@ -196,7 +196,7 @@
                       loading="lazy" class="image">
                     <div class="text-block-4">Otwórz bota w Whatsappie</div>
                   </div>
-                  <a href="#" class="submit-button w-button">Aktywuj na WhasApp</a>
+                  <a href="#" id="whatsapp-btn" class="submit-button w-button">Aktywuj na WhasApp</a>
                 </div>
                 <div class="telegrambuttonwrapper">
                   <div class="otworzwtgwrapper"><img width="25" height="25" alt="" src="images/mess.svg" loading="lazy"
@@ -535,14 +535,14 @@
           });
         }
 
-        if (text.includes("whatsapp")) {
-          btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            const message = encodeURIComponent(`START_${userId}`);
-            const link = `https://wa.me/15556535033?text=${message}`; // ← zmień numer jeśli trzeba
-            window.open(link, "_blank");
-          });
-        }
+        // 🟢 Whatsapp – klasyczna wersja
+        const whatsappBtn = document.getElementById("whatsapp-btn");
+        whatsappBtn?.addEventListener("click", (e) => {
+          e.preventDefault();
+          const message = encodeURIComponent(`START_${userId}`);
+          const link = `https://wa.me/15556535033?text=${message}`;
+          window.open(link, "_blank");
+        });
       });
 
       // 🚪 Wylogowanie
