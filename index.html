@@ -518,27 +518,35 @@
       const prawieWrapper = document.querySelector('.prawiegotowewrapper');
 
       try {
-        const { data: configRow } = await supabase
+        const { data: configRow, error } = await supabase
           .from("user_config")
           .select("telegram_id, whatsapp_nr, messenger_id")
           .eq("user_id", userId)
-          .single();
+          .maybeSingle(); // <- ważne! nie rzuci błędu jak nie ma rekordu
 
-        const hasTelegram = configRow?.telegram_id;
-        const hasWhatsapp = configRow?.whatsapp_nr;
-        const hasMessenger = configRow?.messenger_id;
+        if (error) {
+          console.error("Supabase error:", error);
+        }
+
+        console.log("Dane user_config z supabase:", configRow);
+
+        const hasTelegram = !!configRow?.telegram_id?.trim?.();
+        const hasWhatsapp = !!configRow?.whatsapp_nr?.trim?.();
+        const hasMessenger = !!configRow?.messenger_id?.trim?.();
 
         const hasAnyBot = hasTelegram || hasWhatsapp || hasMessenger;
 
         if (hasAnyBot) {
+          console.log("✅ Ma przynajmniej jednego bota — pokazuję edytuj");
           edytujWrapper?.classList.remove("hidden");
           prawieWrapper?.classList.add("hidden");
         } else {
+          console.log("❌ Nie ma żadnego bota — pokazuję onboarding");
           edytujWrapper?.classList.add("hidden");
           prawieWrapper?.classList.remove("hidden");
         }
-      } catch (error) {
-        console.error("Błąd podczas sprawdzania botów:", error);
+      } catch (err) {
+        console.error("Błąd JS podczas sprawdzania botów:", err);
       }
       // 🔗 Telegram
       const telegramBtns = document.querySelectorAll("a.submit-button.w-button");
