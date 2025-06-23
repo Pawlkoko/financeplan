@@ -581,7 +581,17 @@
             e.preventDefault();
             const botUsername = "Persxfinance_bot";
             const link = `https://t.me/${botUsername}?start=${userId}`;
-            window.open(link, "_blank");
+            fetch(url)
+              .then(res => res.blob())
+              .then(blob => {
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = `wydatki.${format}`; // np. wydatki.csv albo wydatki.pdf
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(a.href);
+              });
           });
         }
       });
@@ -595,7 +605,17 @@
             e.preventDefault();
             const message = encodeURIComponent(`START_${userId}`);
             const link = `https://wa.me/15556535033?text=${message}`;
-            window.open(link, "_blank");
+            fetch(url)
+              .then(res => res.blob())
+              .then(blob => {
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = `wydatki.${format}`; // np. wydatki.csv albo wydatki.pdf
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(a.href);
+              });
           });
         }
       });
@@ -606,7 +626,17 @@
         btn.addEventListener("click", () => {
           const format = btn.dataset.exportFormat;
           const url = `https://pawelko.app.n8n.cloud/webhook-test/840a2962-364c-4f24-b640-3c9e22502c47?user_id=${userId}&format=${format}`;
-          window.open(url, "_blank");
+          fetch(url)
+            .then(res => res.blob())
+            .then(blob => {
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(blob);
+              a.download = `wydatki.${format}`; // np. wydatki.csv albo wydatki.pdf
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(a.href);
+            });
         });
       });
 
