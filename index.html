@@ -508,117 +508,29 @@
       const userId = session.user.id;
       const email = session.user.email;
 
-      console.log("📌 Zalogowany userId:", userId);
-      console.log("📌 Email użytkownika:", email);
-      if (emailText) emailText.innerText = email;
-
-      const { data: existingUser } = await supabase
-        .from("users")
-        .select("user_id")
-        .eq("user_id", userId)
-        .single();
-
-      if (!existingUser) {
-        await supabase.from("users").insert([
-          {
-            user_id: userId,
-            email: email,
-            created_at: new Date().toISOString()
-          }
-        ]);
-      }
-      const edytujWrapper = document.querySelector('.edytujbotawrapper');
-      const prawieWrapper = document.querySelector('.prawiegotowewrapper');
-
+      // 🔢 Ładowanie UsesCount → minuty i liczba wydatków
       try {
-        const { data: configRows, error } = await supabase
+        const { data: usageRow, error: usageError } = await supabase
           .from("user_config")
-          .select("telegram_id, WhatsappNr, messenger_id")
+          .select("UsesCount")
           .eq("user_id", userId)
-          .limit(1); // <-- ważne: nie maybeSingle, tylko limit(1)
+          .single();
 
-        if (error) {
-          console.error("Supabase error:", error);
-        }
-
-        console.log("🔍 Wyniki user_config z supabase:", configRows);
-
-        const configRow = configRows?.[0]; // pierwszy (i jedyny) wynik
-
-        const hasTelegram = !!configRow?.telegram_id?.trim?.();
-        const hasWhatsapp = !!configRow?.WhatsappNr?.trim?.();
-        const hasMessenger = !!configRow?.messenger_id?.trim?.();
-
-        const hasAnyBot = hasTelegram || hasWhatsapp || hasMessenger;
-
-        if (hasAnyBot) {
-          console.log("✅ Ma przynajmniej jednego bota — pokazuję edytuj");
-          edytujWrapper?.classList.remove("hidden");
-          prawieWrapper?.classList.add("hidden");
+        if (usageError) {
+          console.error("Błąd pobierania UsesCount:", usageError);
         } else {
-          console.log("❌ Nie ma żadnego bota — pokazuję onboarding");
-          edytujWrapper?.classList.add("hidden");
-          prawieWrapper?.classList.remove("hidden");
+          const uses = usageRow?.UsesCount || 0;
+          const minutes = Math.round(uses * 2.67);
+
+          const usesSpan = document.getElementById("uses-count");
+          const minutesSpan = document.getElementById("minutes-saved");
+
+          if (usesSpan) usesSpan.textContent = uses;
+          if (minutesSpan) minutesSpan.textContent = minutes;
         }
       } catch (err) {
-        console.error("Błąd JS podczas sprawdzania botów:", err);
+        console.error("Błąd JS przy UsesCount:", err);
       }
-      // 🔗 Telegram
-      const telegramBtns = document.querySelectorAll("a.submit-button.w-button");
-      telegramBtns.forEach((btn) => {
-        const text = btn.textContent.toLowerCase();
-        if (text.includes("telegram")) {
-          btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            const botUsername = "Persxfinance_bot";
-            const link = `https://t.me/${botUsername}?start=${userId}`;
-            window.open(link, "_blank");
-          });
-        }
-      });
-
-      // 🟢 WhatsApp (działa dla wielu guzików)
-      const whatsappBtns = document.querySelectorAll("a.submit-button.w-button");
-      whatsappBtns.forEach((btn) => {
-        const text = btn.textContent.toLowerCase();
-        if (text.includes("whasapp")) {
-          btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            const message = encodeURIComponent(`START_${userId}`);
-            const link = `https://wa.me/15556535033?text=${message}`;
-            window.open(link, "_blank");
-          });
-        }
-      });
-
-      // 🚪 Wylogowanie
-      logoutButton?.addEventListener("click", async () => {
-        await supabase.auth.signOut();
-        window.location.href = "/logowanie/index.html";
-      });
-    });
-  </script>
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-    const supabase = createClient(
-      "https://vptpascqhmpmgnufevks.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0"
-    );
-
-    document.addEventListener("DOMContentLoaded", async () => {
-      const emailText = document.querySelector(".text-block-3");
-      const logoutButton = document.querySelector(".button-primary.w-button");
-
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if (!session?.user) {
-        window.location.href = "/logowanie/index.html";
-        return;
-      }
-
-      const userId = session.user.id;
-      const email = session.user.email;
 
       console.log("📌 Zalogowany userId:", userId);
       console.log("📌 Email użytkownika:", email);
@@ -639,24 +551,22 @@
           }
         ]);
       }
-      const edytujWrapper = document.querySelector('.edytujbotawrapper');
-      const prawieWrapper = document.querySelector('.prawiegotowewrapper');
+
+      const edytujWrapper = document.querySelector(".edytujbotawrapper");
+      const prawieWrapper = document.querySelector(".prawiegotowewrapper");
 
       try {
         const { data: configRows, error } = await supabase
           .from("user_config")
           .select("telegram_id, WhatsappNr, messenger_id")
           .eq("user_id", userId)
-          .limit(1); // <-- ważne: nie maybeSingle, tylko limit(1)
+          .limit(1);
 
         if (error) {
           console.error("Supabase error:", error);
         }
 
-        console.log("🔍 Wyniki user_config z supabase:", configRows);
-
-        const configRow = configRows?.[0]; // pierwszy (i jedyny) wynik
-
+        const configRow = configRows?.[0];
         const hasTelegram = !!configRow?.telegram_id?.trim?.();
         const hasWhatsapp = !!configRow?.WhatsappNr?.trim?.();
         const hasMessenger = !!configRow?.messenger_id?.trim?.();
@@ -664,17 +574,16 @@
         const hasAnyBot = hasTelegram || hasWhatsapp || hasMessenger;
 
         if (hasAnyBot) {
-          console.log("✅ Ma przynajmniej jednego bota — pokazuję edytuj");
           edytujWrapper?.classList.remove("hidden");
           prawieWrapper?.classList.add("hidden");
         } else {
-          console.log("❌ Nie ma żadnego bota — pokazuję onboarding");
           edytujWrapper?.classList.add("hidden");
           prawieWrapper?.classList.remove("hidden");
         }
       } catch (err) {
         console.error("Błąd JS podczas sprawdzania botów:", err);
       }
+
       // 🔗 Telegram
       const telegramBtns = document.querySelectorAll("a.submit-button.w-button");
       telegramBtns.forEach((btn) => {
@@ -689,7 +598,7 @@
         }
       });
 
-      // 🟢 WhatsApp (działa dla wielu guzików)
+      // 🟢 WhatsApp
       const whatsappBtns = document.querySelectorAll("a.submit-button.w-button");
       whatsappBtns.forEach((btn) => {
         const text = btn.textContent.toLowerCase();
@@ -710,30 +619,7 @@
       });
     });
   </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const user = supabase.auth.getUser && (await supabase.auth.getUser()).data.user;
 
-      if (!user) return;
-
-      const { data, error } = await supabase
-        .from('user_config')
-        .select('UsesCount')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) {
-        console.error('Błąd pobierania UsesCount:', error);
-      } else {
-        console.log('✅ UsesCount:', data.UsesCount);
-        const uses = data.UsesCount || 0;
-        const minutes = Math.round((uses * 2.67) / 60);
-
-        document.getElementById("uses-count").textContent = uses;
-        document.getElementById("minutes-saved").textContent = minutes;
-      }
-    });
-  </script>
 </body>
 
 </html>
