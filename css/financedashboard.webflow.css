@@ -279,7 +279,7 @@
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  display: none;
+  display: block;
 }
 
 .body {
@@ -684,7 +684,7 @@
   align-items: center;
   margin-top: 0;
   margin-bottom: 0;
-  padding-top: 0;
+  padding-top: 41px;
   padding-bottom: 10px;
 }
 
@@ -699,7 +699,8 @@
 
 .tab-pane-konfiguracja {
   width: 100%;
-  height: 75vh;
+  height: auto;
+  min-height: 75vh;
   position: static;
 }
 
@@ -1198,6 +1199,7 @@
   width: 100%;
   height: auto;
   min-height: 70vh;
+  margin-top: 0;
   margin-left: 5px;
   padding: 40px 40px 40px 60px;
   display: flex;
@@ -1548,9 +1550,14 @@
   }
 
   .paragraph {
-    text-align: left;
+    text-align: center;
     padding-top: 20px;
     font-size: 15px;
+  }
+
+  .div-block-9 {
+    justify-content: center;
+    align-items: center;
   }
 
   .heading-4 {
@@ -1681,7 +1688,9 @@
   }
 
   .title2.side-2 {
-    text-align: left;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
     padding-bottom: 0;
     line-height: 30px;
   }
@@ -1836,7 +1845,7 @@
   }
 
   .paragraph {
-    text-align: left;
+    text-align: center;
     padding-top: 10px;
     font-size: 12px;
     line-height: 20px;
@@ -2024,7 +2033,7 @@
   }
 
   .title2.side-2 {
-    text-align: left;
+    text-align: center;
     margin-top: 40px;
     font-size: 16px;
     line-height: 26px;
