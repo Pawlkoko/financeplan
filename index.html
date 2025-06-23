@@ -497,6 +497,9 @@
 
       const userId = session.user.id;
       const email = session.user.email;
+
+      console.log("📌 Zalogowany userId:", userId);
+      console.log("📌 Email użytkownika:", email);
       if (emailText) emailText.innerText = email;
 
       const { data: existingUser } = await supabase
