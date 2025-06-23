@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Warstwa_2" data-name="Warstwa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12.41 13.89">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke-width: 0px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1" data-name="Layer 1">
+    <rect class="cls-1" x="0" y="5.84" width="2.55" height="8.05" rx="1.27" ry="1.27"/>
+    <rect class="cls-1" x="4.93" y="3.68" width="2.55" height="10.2" rx="1.27" ry="1.27"/>
+    <rect class="cls-1" x="9.86" y="0" width="2.55" height="13.89" rx="1.27" ry="1.27"/>
+  </g>
+</svg>

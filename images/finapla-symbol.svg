@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Warstwa_2" data-name="Warstwa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 679.63 679.63">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Gradient_bez_nazwy_27-2);
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: url(#Gradient_bez_nazwy_27);
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+
+      .cls-4 {
+        fill: url(#Gradient_bez_nazwy_27-3);
+      }
+    </style>
+    <linearGradient id="Gradient_bez_nazwy_27" data-name="Gradient bez nazwy 27" x1="450.5" y1="205.37" x2="313.53" y2="731.12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c8f20c"/>
+      <stop offset="1" stop-color="#f2e30c"/>
+    </linearGradient>
+    <linearGradient id="Gradient_bez_nazwy_27-2" data-name="Gradient bez nazwy 27" x1="426.56" y1="199.14" x2="289.59" y2="724.88" xlink:href="#Gradient_bez_nazwy_27"/>
+    <linearGradient id="Gradient_bez_nazwy_27-3" data-name="Gradient bez nazwy 27" x1="385.2" y1="188.36" x2="248.24" y2="714.11" xlink:href="#Gradient_bez_nazwy_27"/>
+  </defs>
+  <g id="Warstwa_1-2" data-name="Warstwa 1">
+    <rect class="cls-3" width="679.63" height="679.63"/>
+    <g>
+      <path class="cls-2" d="m327.05,195.8h349.59c0,72.93-59.21,132.13-132.13,132.13H194.92c0-72.93,59.21-132.13,132.13-132.13Z"/>
+      <path class="cls-1" d="m194.92,369.71h369.96c0,72.93-59.21,132.13-132.13,132.13h-237.83v-132.13h0Z"/>
+      <path class="cls-4" d="m194.92,543.62h191.03c0,72.93-59.21,132.13-132.13,132.13h-58.9v-132.13h0Z"/>
+    </g>
+  </g>
+</svg>
