@@ -514,7 +514,32 @@
           }
         ]);
       }
+      const edytujWrapper = document.querySelector('.edytujbotawrapper');
+      const prawieWrapper = document.querySelector('.prawiegotowewrapper');
 
+      try {
+        const { data: configRow } = await supabase
+          .from("user_config")
+          .select("telegram_id, whatsapp_nr, messenger_id")
+          .eq("user_id", userId)
+          .single();
+
+        const hasTelegram = configRow?.telegram_id;
+        const hasWhatsapp = configRow?.whatsapp_nr;
+        const hasMessenger = configRow?.messenger_id;
+
+        const hasAnyBot = hasTelegram || hasWhatsapp || hasMessenger;
+
+        if (hasAnyBot) {
+          edytujWrapper?.classList.remove("hidden");
+          prawieWrapper?.classList.add("hidden");
+        } else {
+          edytujWrapper?.classList.add("hidden");
+          prawieWrapper?.classList.remove("hidden");
+        }
+      } catch (error) {
+        console.error("Błąd podczas sprawdzania botów:", error);
+      }
       // 🔗 Telegram
       const telegramBtns = document.querySelectorAll("a.submit-button.w-button");
       telegramBtns.forEach((btn) => {
