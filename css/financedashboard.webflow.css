@@ -1953,7 +1953,7 @@
   }
 
   .edytujbotawrapper {
-    display: none;
+    display: block;
   }
 
   .body {
@@ -2005,6 +2005,10 @@
     justify-content: flex-start;
     align-items: center;
     display: block;
+  }
+
+  .prawiegotowewrapper.hidden {
+    display: none;
   }
 
   .text-block-8 {
