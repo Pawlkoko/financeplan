@@ -483,7 +483,7 @@
 
     const supabase = createClient(
       "https://vptpascqhmpmgnufevks.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
     );
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -492,7 +492,6 @@
 
       const { data: { session } } = await supabase.auth.getSession();
 
-      // 🔒 Przekieruj niezalogowanych
       if (!session?.user) {
         window.location.href = "/logowanie/index.html";
         return;
@@ -500,11 +499,8 @@
 
       const userId = session.user.id;
       const email = session.user.email;
-
-      // 📧 Wstaw email użytkownika
       if (emailText) emailText.innerText = email;
 
-      // ✅ Dodaj do bazy jeśli brak
       const { data: existingUser } = await supabase
         .from("users")
         .select("user_id")
@@ -521,28 +517,27 @@
         ]);
       }
 
-      // 🔗 Aktywatory bota
+      // 🔗 Telegram
       const telegramBtns = document.querySelectorAll("a.submit-button.w-button");
       telegramBtns.forEach((btn) => {
         const text = btn.textContent.toLowerCase();
-
         if (text.includes("telegram")) {
           btn.addEventListener("click", (e) => {
             e.preventDefault();
-            const botUsername = "Persxfinance_bot"; // ← zmień jeśli trzeba
+            const botUsername = "Persxfinance_bot";
             const link = `https://t.me/${botUsername}?start=${userId}`;
             window.open(link, "_blank");
           });
         }
+      });
 
-        // 🟢 Whatsapp – klasyczna wersja
-        const whatsappBtn = document.getElementById("whatsapp-btn");
-        whatsappBtn?.addEventListener("click", (e) => {
-          e.preventDefault();
-          const message = encodeURIComponent(`START_${userId}`);
-          const link = `https://wa.me/15556535033?text=${message}`;
-          window.open(link, "_blank");
-        });
+      // 🟢 WhatsApp (naprawiona pozycja)
+      const whatsappBtn = document.getElementById("whatsapp-btn");
+      whatsappBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const message = encodeURIComponent(`START_${userId}`);
+        const link = `https://wa.me/15556535033?text=${message}`;
+        window.open(link, "_blank");
       });
 
       // 🚪 Wylogowanie
