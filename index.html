@@ -624,6 +624,7 @@
       supabase.auth.getSession().then(({ data: { session } }) => {
         const userId = session.user.id;
         const url = `https://pawelko.app.n8n.cloud/webhook-test/840a2962-364c-4f24-b640-3c9e22502c47?user_id=${userId}&format=${format}`;
+
         window.open(url, '_blank');
       });
     }
