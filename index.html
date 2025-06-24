@@ -514,7 +514,38 @@
         console.error("Błąd JS przy UsesCount:", err);
       }
       // 🔗 Otwórz arkusz Google Sheets z Supabase
+      // 🔗 Otwórz arkusz Google Sheets z Supabase + pokaż sekcję tylko jeśli istnieje
       const openSheetBtn = document.getElementById("open-sheet-button");
+      const wydatkiWrapper = document.getElementById("wydatki-wrapper");
+
+      // Ukryj sekcję na starcie
+      if (wydatkiWrapper) wydatkiWrapper.style.display = "none";
+
+      // Pobierz link z Supabase
+      try {
+        const { data, error } = await supabase
+          .from("user_config")
+          .select("spreadsheet_link")
+          .eq("user_id", userId)
+          .single();
+
+        if (error || !data?.spreadsheet_link?.trim()) {
+          console.log("📉 Brak spreadsheet_link – sekcja ukryta.");
+          return;
+        }
+
+        // Pokaż sekcję i przypnij przycisk
+        if (wydatkiWrapper) wydatkiWrapper.style.display = "block";
+
+        if (openSheetBtn) {
+          openSheetBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.open(data.spreadsheet_link, "_blank");
+          });
+        }
+      } catch (err) {
+        console.error("Błąd podczas sprawdzania spreadsheet_link:", err);
+      }
 
       if (openSheetBtn) {
         openSheetBtn.addEventListener("click", async (e) => {
