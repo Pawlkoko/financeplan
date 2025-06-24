@@ -131,7 +131,7 @@
                         Google)</span></div>
                   </div>
                   <div class="buttonwrapper">
-                    <a href="#" class="button-seckondary w-button">Otwórz w Google Sheets </a>
+                    <a href="#" id="open-sheet-button" class="button-seckondary w-button">Otwórz w Google Sheets </a>
                   </div>
                 </div>
                 <div class="listwrapper">
@@ -523,7 +523,28 @@
       } catch (err) {
         console.error("Błąd JS przy UsesCount:", err);
       }
+      // 🔗 Otwórz arkusz Google Sheets z Supabase
+      const openSheetBtn = document.getElementById("open-sheet-button");
 
+      if (openSheetBtn) {
+        openSheetBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+
+          const { data, error } = await supabase
+            .from("user_config")
+            .select("sheet_url")
+            .eq("user_id", userId)
+            .single();
+
+          if (error || !data?.sheet_url) {
+            alert("Nie udało się znaleźć linku do arkusza Google Sheets.");
+            console.error("Błąd pobierania linku:", error);
+            return;
+          }
+
+          window.open(data.sheet_url, "_blank");
+        });
+      }
       // 🧠 Jeśli user nie istnieje w tabeli `users` – dopisz
       const { data: existingUser } = await supabase
         .from("users")
