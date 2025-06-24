@@ -644,6 +644,39 @@
         await supabase.auth.signOut();
         window.location.href = "/logowanie/index.html";
       });
+
+      // ✉️ Aktualizacja adresu e-mail
+      const updateEmailForm = document.querySelector('form#email-form[name="email-form"]'); // formularz zmiany e-maila
+
+      if (updateEmailForm) {
+        updateEmailForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const newEmailInput = document.querySelector("#NewEmail");
+          const newEmail = newEmailInput?.value?.trim();
+
+          if (!newEmail) {
+            alert("Podaj nowy adres e-mail.");
+            return;
+          }
+
+          try {
+            const { data, error } = await supabase.auth.updateUser({ email: newEmail });
+
+            if (error) {
+              alert("❌ Błąd przy zmianie adresu e-mail: " + error.message);
+              console.error("Błąd Supabase:", error);
+            } else {
+              alert("✅ Na nowy adres został wysłany e-mail weryfikacyjny.");
+              newEmailInput.value = "";
+            }
+          } catch (err) {
+            console.error("❌ Błąd JS:", err);
+            alert("Wystąpił nieoczekiwany błąd.");
+          }
+        });
+      }
+
     });
   </script>
 </body>
