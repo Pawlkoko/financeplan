@@ -593,17 +593,7 @@
             e.preventDefault();
             const botUsername = "Persxfinance_bot";
             const link = `https://t.me/${botUsername}?start=${userId}`;
-            fetch(url)
-              .then(res => res.blob())
-              .then(blob => {
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
-                a.download = `wydatki.${format}`; // np. wydatki.csv albo wydatki.pdf
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                URL.revokeObjectURL(a.href);
-              });
+            window.open(link, "_blank");
           });
         }
       });
@@ -617,17 +607,7 @@
             e.preventDefault();
             const message = encodeURIComponent(`START_${userId}`);
             const link = `https://wa.me/15556535033?text=${message}`;
-            fetch(url)
-              .then(res => res.blob())
-              .then(blob => {
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
-                a.download = `wydatki.${format}`; // np. wydatki.csv albo wydatki.pdf
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                URL.revokeObjectURL(a.href);
-              });
+            window.open(link, "_blank");
           });
         }
       });
