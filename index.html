@@ -511,6 +511,12 @@
           if (usesSpan) usesSpan.textContent = uses;
           if (minutesSpan) minutesSpan.textContent = minutes;
         }
+        // 🔟 Wersja Demo – pokazuj X/10 jeśli X < 10
+        const demoCountText = document.querySelector(".text-block-16");
+        if (demoCountText) {
+          const limitedUses = Math.min(uses, 10);
+          demoCountText.textContent = `${limitedUses}/10`;
+        }
       } catch (err) {
         console.error("Błąd JS przy UsesCount:", err);
       }
