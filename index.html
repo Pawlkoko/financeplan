@@ -664,7 +664,7 @@
               alert("❌ Błąd przy zmianie adresu e-mail: " + error.message);
               console.error("Błąd Supabase:", error);
             } else {
-              alert("✅ Na nowy adres został wysłany e-mail weryfikacyjny.");
+              alert("✅ Na nowy adres został wysłany e-mail weryfikacyjny. ⚠️ Zmiana adresu e - mail wymaga potwierdzenia na obecnym i nowym adresie.Sprawdź obie skrzynki!");
               newEmailInput.value = "";
             }
           } catch (err) {
