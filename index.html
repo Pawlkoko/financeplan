@@ -519,7 +519,8 @@
       const wydatkiWrapper = document.getElementById("wydatki-wrapper");
 
       // Ukryj sekcję na starcie
-      if (wydatkiWrapper) wydatkiWrapper.style.display = "none";
+      if (wydatkiWrapper) wydatkiWrapper.classList.add("hidden");
+
 
       // Pobierz link z Supabase
       try {
@@ -535,7 +536,8 @@
         }
 
         // Pokaż sekcję i przypnij przycisk
-        if (wydatkiWrapper) wydatkiWrapper.style.display = "block";
+        if (wydatkiWrapper) wydatkiWrapper.classList.remove("hidden");
+
 
         if (openSheetBtn) {
           openSheetBtn.addEventListener("click", (e) => {
