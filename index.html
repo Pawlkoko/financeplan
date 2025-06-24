@@ -118,7 +118,7 @@
                   </div>
                 </div>
               </div>
-              <div class="tabelewrapper">
+              <div class="tabelewrapper" id="wydatki-wrapper">
                 <div class="title2">Twoje wydatki</div>
                 <p class="paragraph">Tutaj zobaczysz oraz pobierzesz tabelę ze swoimi wydatkami</p>
                 <div class="line"></div>
@@ -513,41 +513,32 @@
       } catch (err) {
         console.error("Błąd JS przy UsesCount:", err);
       }
-      // 🔗 Otwórz arkusz Google Sheets z Supabase
+      // 🔗 Otwórz arkusz Google Sheets z Supabase + pokaż sekcję tylko jeśli istnieje
       const openSheetBtn = document.getElementById("open-sheet-button");
+      const wydatkiWrapper = document.getElementById("wydatki-wrapper");
 
-      if (openSheetBtn) {
-        openSheetBtn.addEventListener("click", async (e) => {
+      // Ukryj domyślnie
+      if (wydatkiWrapper) wydatkiWrapper.style.display = "none";
+
+      if (openSheetBtn && wydatkiWrapper) {
+        const { data, error } = await supabase
+          .from("user_config")
+          .select("spreadsheet_link")
+          .eq("user_id", userId)
+          .single();
+
+        if (error || !data?.spreadsheet_link?.trim()) {
+          console.log("📉 Brak spreadsheet_link – sekcja ukryta.");
+          return;
+        }
+
+        // Mamy link – pokaż sekcję i przypnij przycisk
+        wydatkiWrapper.style.display = "block";
+
+        openSheetBtn.addEventListener("click", (e) => {
           e.preventDefault();
-
-          const { data, error } = await supabase
-            .from("user_config")
-            .select("spreadsheet_link")
-            .eq("user_id", userId)
-            .single();
-
-          if (error || !data?.spreadsheet_link) {
-            alert("Nie udało się znaleźć linku do arkusza Google Sheets.");
-            console.error("Błąd pobierania linku:", error);
-            return;
-          }
-
           window.open(data.spreadsheet_link, "_blank");
         });
-      }
-      // 🧠 Jeśli user nie istnieje w tabeli `users` – dopisz
-      const { data: existingUser } = await supabase
-        .from("users")
-        .select("user_id")
-        .eq("user_id", userId)
-        .single();
-
-      if (!existingUser) {
-        await supabase.from("users").insert([{
-          user_id: userId,
-          email: email,
-          created_at: new Date().toISOString()
-        }]);
       }
 
       // 🤖 Sprawdzenie botów
