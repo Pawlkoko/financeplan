@@ -532,17 +532,17 @@
 
           const { data, error } = await supabase
             .from("user_config")
-            .select("sheet_url")
+            .select("spreadsheet_link")
             .eq("user_id", userId)
             .single();
 
-          if (error || !data?.sheet_url) {
+          if (error || !data?.spreadsheet_link) {
             alert("Nie udało się znaleźć linku do arkusza Google Sheets.");
             console.error("Błąd pobierania linku:", error);
             return;
           }
 
-          window.open(data.sheet_url, "_blank");
+          window.open(data.spreadsheet_link, "_blank");
         });
       }
       // 🧠 Jeśli user nie istnieje w tabeli `users` – dopisz
