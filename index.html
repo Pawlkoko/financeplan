@@ -342,6 +342,7 @@
                       data-name="NewEmail" placeholder="mail@mail.com" type="email" id="NewEmail" required=""></div>
                   <input type="submit" data-wait="Please wait..." class="button-seckondary emailupdate w-button"
                     value="Zmień">
+                  <div id="password-update-info" class="info-box" style="margin-top: 10px; font-weight: 500;"></div>
                   <div id="email-update-info" class="info-box" style="margin-top: 10px; font-weight: 500;"></div>
                 </form>
               </div>
@@ -664,7 +665,7 @@
               alert("❌ Błąd przy zmianie adresu e-mail: " + error.message);
               console.error("Błąd Supabase:", error);
             } else {
-              alert("✅ Na nowy adres został wysłany e-mail weryfikacyjny. ⚠️ Zmiana adresu e - mail wymaga potwierdzenia na obecnym i nowym adresie.Sprawdź obie skrzynki!");
+              alert("✅ Na nowy adres został wysłany e-mail weryfikacyjny. ⚠️ Zmiana adresu e - mail wymaga potwierdzenia na obecnym i nowym adresie. Sprawdź obie skrzynki!");
               newEmailInput.value = "";
             }
           } catch (err) {
@@ -673,7 +674,78 @@
           }
         });
       }
+      // 🔐 Zmiana hasła
+      const updatePasswordForm = document.querySelector('form#email-form[name="email-form"] .passwordupdateform, .passwordupdateform form');
 
+      if (updatePasswordForm) {
+        updatePasswordForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const oldPasswordInput = document.querySelector("#OldPassword");
+          const newPasswordInput = document.querySelector("#NewPassword");
+          const repeatPasswordInput = document.querySelector("#RepeatPassword");
+          const infoBox = document.getElementById("password-update-info");
+
+          const oldPassword = oldPasswordInput?.value.trim();
+          const newPassword = newPasswordInput?.value.trim();
+          const repeatPassword = repeatPasswordInput?.value.trim();
+
+          // Proste walidacje
+          if (!oldPassword || !newPassword || !repeatPassword) {
+            infoBox.textContent = "❗Uzupełnij wszystkie pola.";
+            infoBox.style.color = "red";
+            return;
+          }
+
+          if (newPassword.length < 6) {
+            infoBox.textContent = "❗Nowe hasło musi mieć min. 6 znaków.";
+            infoBox.style.color = "red";
+            return;
+          }
+
+          if (newPassword !== repeatPassword) {
+            infoBox.textContent = "❗Nowe hasła się nie zgadzają.";
+            infoBox.style.color = "red";
+            return;
+          }
+
+          try {
+            // Supabase nie wymaga starego hasła, ale my sprawdzimy login dla pewności
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+            const email = session?.user?.email;
+
+            const { error: loginError } = await supabase.auth.signInWithPassword({
+              email,
+              password: oldPassword,
+            });
+
+            if (loginError) {
+              infoBox.textContent = "❌ Błędne stare hasło.";
+              infoBox.style.color = "red";
+              return;
+            }
+
+            // Zmieniamy hasło
+            const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+            if (error) {
+              infoBox.textContent = "❌ Błąd przy zmianie hasła: " + error.message;
+              infoBox.style.color = "red";
+            } else {
+              infoBox.textContent = "✅ Hasło zostało zmienione!";
+              infoBox.style.color = "limegreen";
+              oldPasswordInput.value = "";
+              newPasswordInput.value = "";
+              repeatPasswordInput.value = "";
+            }
+          } catch (err) {
+            console.error("Błąd zmiany hasła:", err);
+            infoBox.textContent = "❌ Wystąpił nieoczekiwany błąd.";
+            infoBox.style.color = "red";
+          }
+        });
+      }
     });
   </script>
 </body>
