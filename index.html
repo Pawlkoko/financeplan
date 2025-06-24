@@ -493,6 +493,7 @@
 
       // 📊 Liczba użyć → do podsumowania
       try {
+        let uses = 0;
         const { data: usageRow, error: usageError } = await supabase
           .from("user_config")
           .select("UsesCount")
@@ -502,7 +503,7 @@
         if (usageError) {
           console.error("Błąd pobierania UsesCount:", usageError);
         } else {
-          const uses = usageRow?.UsesCount || 0;
+          uses = usageRow?.UsesCount || 0;
           const minutes = Math.round(uses * 2.67);
 
           const usesSpan = document.getElementById("uses-count");
