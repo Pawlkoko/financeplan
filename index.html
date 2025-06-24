@@ -510,19 +510,19 @@
           const limitedUses = Math.min(uses, 10);
           demoCountText.textContent = `${limitedUses}/10`;
         }
+
+
       } catch (err) {
         console.error("Błąd JS przy UsesCount:", err);
       }
-      // 🔗 Otwórz arkusz Google Sheets z Supabase
-      // 🔗 Otwórz arkusz Google Sheets z Supabase + pokaż sekcję tylko jeśli istnieje
+      // 🔗 Pokazuj sekcję wydatków tylko jeśli istnieje spreadsheet_link
       const openSheetBtn = document.getElementById("open-sheet-button");
       const wydatkiWrapper = document.getElementById("wydatki-wrapper");
 
-      // Ukryj sekcję na starcie
-      if (wydatkiWrapper) wydatkiWrapper.classList.add("hidden");
+      if (wydatkiWrapper) {
+        wydatkiWrapper.classList.add("hidden"); // ukryj domyślnie
+      }
 
-
-      // Pobierz link z Supabase
       try {
         const { data, error } = await supabase
           .from("user_config")
@@ -530,51 +530,22 @@
           .eq("user_id", userId)
           .single();
 
-        if (error || !data?.spreadsheet_link?.trim()) {
-          console.log("📉 Brak spreadsheet_link – sekcja ukryta.");
-          return;
-        }
+        const link = data?.spreadsheet_link?.trim();
 
-        // Pokaż sekcję i przypnij przycisk
-        if (wydatkiWrapper) wydatkiWrapper.classList.remove("hidden");
+        if (link && wydatkiWrapper) {
+          wydatkiWrapper.classList.remove("hidden");
 
-
-        if (openSheetBtn) {
-          openSheetBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            window.open(data.spreadsheet_link, "_blank");
-          });
+          if (openSheetBtn) {
+            openSheetBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              window.open(link, "_blank");
+            });
+          }
+        } else {
+          console.log("🔒 Brak spreadsheet_link – sekcja ukryta.");
         }
       } catch (err) {
-        console.error("Błąd podczas sprawdzania spreadsheet_link:", err);
-      }
-
-      if (openSheetBtn) {
-        openSheetBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-
-          const { data, error } = await supabase
-            .from("user_config")
-            .select("spreadsheet_link")
-            .eq("user_id", userId)
-            .single();
-
-          if (error || !data?.spreadsheet_link?.trim()) {
-            console.log("📉 Brak spreadsheet_link – sekcja ukryta.");
-          } else {
-            // Pokaż sekcję i przypnij przycisk
-            if (wydatkiWrapper) wydatkiWrapper.style.display = "block";
-
-            if (openSheetBtn) {
-              openSheetBtn.addEventListener("click", (e) => {
-                e.preventDefault();
-                window.open(data.spreadsheet_link, "_blank");
-              });
-            }
-          }
-
-          window.open(data.spreadsheet_link, "_blank");
-        });
+        console.error("❌ Błąd pobierania spreadsheet_link:", err);
       }
       // 🧠 Jeśli user nie istnieje w tabeli `users` – dopisz
       const { data: existingUser } = await supabase
