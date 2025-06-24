@@ -442,17 +442,19 @@
   <style>
     .tabs-no-scrollbar {
       -ms-overflow-style: none;
-      /* IE i Edge */
       scrollbar-width: none;
-      /* Firefox */
       overflow-y: hidden;
     }
 
     .tabs-no-scrollbar::-webkit-scrollbar {
       display: none;
-      /* Chrome, Safari */
       height: 0px;
       background: transparent;
+    }
+
+    /* 👇 Klasa do ukrywania sekcji */
+    .hidden {
+      display: none !important;
     }
   </style>
   <script type="module">
