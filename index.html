@@ -557,10 +557,18 @@
             .eq("user_id", userId)
             .single();
 
-          if (error || !data?.spreadsheet_link) {
-            alert("Nie udało się znaleźć linku do arkusza Google Sheets.");
-            console.error("Błąd pobierania linku:", error);
-            return;
+          if (error || !data?.spreadsheet_link?.trim()) {
+            console.log("📉 Brak spreadsheet_link – sekcja ukryta.");
+          } else {
+            // Pokaż sekcję i przypnij przycisk
+            if (wydatkiWrapper) wydatkiWrapper.style.display = "block";
+
+            if (openSheetBtn) {
+              openSheetBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.open(data.spreadsheet_link, "_blank");
+              });
+            }
           }
 
           window.open(data.spreadsheet_link, "_blank");
