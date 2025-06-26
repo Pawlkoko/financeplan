@@ -94,35 +94,45 @@
 
         const email = document.getElementById("Email").value;
         const password = document.getElementById("password").value;
+        const submitBtn = form.querySelector('input[type="submit"]');
+
+        // Blokada i zmiana tekstu przycisku
+        submitBtn.disabled = true;
+        submitBtn.value = "Rejestruję...";
 
         // Walidacja checkboxów
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         for (let checkbox of checkboxes) {
           if (!checkbox.checked) {
             alert("Aby się zarejestrować, musisz zaznaczyć wszystkie zgody.");
+            submitBtn.disabled = false;
+            submitBtn.value = "Zarejestruj się";
             return;
           }
         }
 
-        // 🔍 Sprawdź, czy email istnieje w user_config
+        // Sprawdzenie e-maila
         const { data: existingUsers, error: selectError } = await client
           .from("user_config")
           .select("email")
           .eq("email", email);
 
         if (selectError) {
-          console.error("Błąd sprawdzania e-maila:", selectError.message);
           alert("Coś poszło nie tak. Spróbuj ponownie później.");
+          submitBtn.disabled = false;
+          submitBtn.value = "Zarejestruj się";
           return;
         }
 
         if (existingUsers && existingUsers.length > 0) {
-          alert("Ten adres e-mail jest już zarejestrowany. Zaloguj się lub sprawdź swoją skrzynkę.");
+          alert("Ten adres e-mail jest już zarejestrowany.");
+          submitBtn.disabled = false;
+          submitBtn.value = "Zarejestruj się";
           return;
         }
 
-        // ✉️ Rejestracja
-        const { data, error } = await client.auth.signUp({
+        // Rejestracja
+        const { error } = await client.auth.signUp({
           email,
           password,
           options: {
@@ -131,15 +141,17 @@
         });
 
         if (error) {
-          console.error("❌ Błąd:", error.message);
           alert("Błąd rejestracji: " + error.message);
+          submitBtn.disabled = false;
+          submitBtn.value = "Zarejestruj się";
           return;
         }
 
-        // 🎉 Sukces
+        // Sukces – pokaż animację
         document.querySelector(".registerformwrapper").style.display = "none";
         document.querySelector(".checkemailanimation").style.display = "flex";
       });
+
     });
   </script>
 </body>
