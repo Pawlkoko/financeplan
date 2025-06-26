@@ -335,7 +335,7 @@
             <div class="updateemailwrapper">
               <h1 class="title3">Zaktualizuj adres e-mail</h1>
               <div class="mailuipdateform w-form">
-                <form id="email-form" name="email-form" data-name="Email Form"
+                <form id="email-form-email" name="email-form-email" data-name="Email Form"
                   data-wf-page-id="682b7e84a37f1c21053d0196" data-wf-element-id="224cce17-30a9-9da3-4b84-615a1b80c056">
                   <label for="email" class="field-label">Wpisz nowy adres e-mail</label>
                   <div class="inputwithbuttonwrapper"><input class="text-field w-input" maxlength="256" name="NewEmail"
@@ -350,8 +350,9 @@
             <div class="updateemailwrapper">
               <h1 class="title3">Zaktualizuj hasło</h1>
               <div class="passwordupdateform w-form">
-                <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form"
-                  data-wf-page-id="682b7e84a37f1c21053d0196" data-wf-element-id="08af812a-45b2-781a-a4d9-067ecf2b0fd7">
+                <form id="email-form-password" name="email-form-password" data-name="Email Form" method="get"
+                  class="form" data-wf-page-id="682b7e84a37f1c21053d0196"
+                  data-wf-element-id="08af812a-45b2-781a-a4d9-067ecf2b0fd7">
                   <label for="email" class="field-label">Wpisz stare hasło</label>
                   <div class="inputwithbuttonwrapper"><input class="text-field w-input" maxlength="256"
                       name="OldPassword" data-name="OldPassword" placeholder="**************" type="password"
@@ -652,7 +653,7 @@
       });
 
       // ✉️ Aktualizacja adresu e-mail
-      const updateEmailForm = document.querySelector('form#email-form[name="email-form"]'); // formularz zmiany e-maila
+      const updateEmailForm = document.querySelector('form#email-form[name="email-form-email"]'); // formularz zmiany e-maila
 
       if (updateEmailForm) {
         updateEmailForm.addEventListener("submit", async (e) => {
@@ -683,7 +684,7 @@
         });
       }
       // 🔐 Zmiana hasła
-      const updatePasswordForm = document.querySelector('form#email-form[name="email-form"] .passwordupdateform, .passwordupdateform form');
+      const updatePasswordForm = document.querySelector('form#email-form[name="email-form-password"] .passwordupdateform, .passwordupdateform form');
 
       if (updatePasswordForm) {
         updatePasswordForm.addEventListener("submit", async (e) => {
