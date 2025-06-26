@@ -629,22 +629,40 @@
       // 💾 Pobieranie danych jako PDF, CSV, XLS, XLSX
       const exportButtons = document.querySelectorAll("[data-export-format]");
       exportButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
           const format = btn.dataset.exportFormat;
+          const originalText = btn.textContent;
+
+          // Zmień tekst i zablokuj przycisk
+          btn.textContent = `Eksportuję .${format.toUpperCase()}...`;
+          btn.style.pointerEvents = "none";
+          btn.style.opacity = "0.6";
+
           const url = `https://pawelko.app.n8n.cloud/webhook/840a2962-364c-4f24-b640-3c9e22502c47?user_id=${userId}&format=${format}`;
-          fetch(url)
-            .then(res => res.blob())
-            .then(blob => {
-              const a = document.createElement("a");
-              a.href = URL.createObjectURL(blob);
-              a.download = `wydatki.${format}`; // np. wydatki.csv albo wydatki.pdf
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
-              URL.revokeObjectURL(a.href);
-            });
+
+          try {
+            const res = await fetch(url);
+            const blob = await res.blob();
+
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = `wydatki.${format}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(a.href);
+          } catch (err) {
+            alert("❌ Wystąpił błąd podczas pobierania pliku.");
+            console.error(err);
+          } finally {
+            // Przywróć przycisk
+            btn.textContent = originalText;
+            btn.style.pointerEvents = "auto";
+            btn.style.opacity = "1";
+          }
         });
       });
+
 
       logoutButton?.addEventListener("click", async () => {
         await supabase.auth.signOut();
