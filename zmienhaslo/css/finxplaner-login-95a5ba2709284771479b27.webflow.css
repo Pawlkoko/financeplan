@@ -47,6 +47,12 @@
   border: 1px solid #cfef0c;
 }
 
+.submit-button.seckondary:hover {
+  color: #000;
+  background-color: #d1ef0c;
+  transform: scale(1.05);
+}
+
 .form {
   text-align: center;
   flex-flow: column;
