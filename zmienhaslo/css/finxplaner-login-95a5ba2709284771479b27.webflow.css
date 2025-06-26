@@ -242,7 +242,7 @@
   flex-flow: column;
   order: 0;
   width: 100%;
-  display: block;
+  display: none;
 }
 
 .emailsentwrapper {
@@ -250,7 +250,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  display: none;
+  display: flex;
 }
 
 .text-block-5 {
