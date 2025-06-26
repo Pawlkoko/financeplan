@@ -99,7 +99,7 @@
 
       try {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: "https://financeplan-topaz.vercel.app/podaj-nowe-haslo/index.html"
+          redirectTo: "https://financeplan-topaz.vercel.app/podaj-nowe-haslo/index.html?fromReset=true"
         });
         if (error) {
           // 🔄 Cofnij widoki
