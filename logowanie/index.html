@@ -79,11 +79,29 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       // ✅ 1. AUTOMATYCZNE PRZEKIEROWANIE JAK USER JUŻ ZALOGOWANY
-      client.auth.getSession().then(({ data: { session } }) => {
+      client.auth.getSession().then(async ({ data: { session } }) => {
         if (session) {
+          const userId = session.user.id;
+          const email = session.user.email;
+
+          // Sprawdź, czy istnieje wpis w user_config
+          const { data: existingUser } = await client
+            .from("user_config")
+            .select("user_id")
+            .eq("user_id", userId)
+            .maybeSingle();
+
+          if (!existingUser) {
+            await client
+              .from("user_config")
+              .insert([{ user_id: userId, email, created_at: new Date().toISOString() }]);
+          }
+
+          // Przekierowanie
           window.location.href = "https://financeplan-topaz.vercel.app/";
         }
       });
+
 
       const form = document.getElementById("email-form");
       const emailInput = document.getElementById("email");
