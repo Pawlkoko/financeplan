@@ -58,7 +58,8 @@
               Zarejestruj się</a>
           </div>
         </div>
-        <a href="#https://google.com" class="link">Zapomniałeś hasła? Zresetuj je tutaj</a>
+        <a href="https://financeplan-topaz.vercel.app/zmienhaslo/index.html" class="link">Zapomniałeś hasła? Zresetuj je
+          tutaj</a>
       </div>
     </div>
   </div>
@@ -132,32 +133,6 @@
           window.location.href = "https://financeplan-topaz.vercel.app/";
         }, 1000); // krótki delay dla animacji
       });
-
-      // ✅ 2. RESET HASŁA Z LINKU
-      const resetLink = document.querySelector('a[href^="#https://google.com"]');
-      if (resetLink) {
-        resetLink.removeAttribute("href");
-        resetLink.style.cursor = "pointer";
-        resetLink.addEventListener("click", async function (e) {
-          e.preventDefault();
-
-          const email = emailInput.value;
-          if (!email) {
-            alert("Wpisz adres e-mail przed resetowaniem hasła.");
-            return;
-          }
-
-          const { error } = await client.auth.resetPasswordForEmail(email, {
-            redirectTo: "https://financeplan-topaz.vercel.app/zmiana-hasla"
-          });
-
-          if (error) {
-            alert("❌ Błąd przy wysyłaniu linku: " + error.message);
-          } else {
-            alert("📧 Sprawdź swoją skrzynkę e-mail – wysłaliśmy link do resetu hasła.");
-          }
-        });
-      }
     });
   </script>
 </body>
