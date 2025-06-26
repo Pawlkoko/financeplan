@@ -85,22 +85,46 @@
 
       const wpiszWrapper = document.querySelector(".wpiszemailwrapper");
       const wyslanoWrapper = document.querySelector(".emailsentwrapper");
+      const submitBtn = form.querySelector('input[type="submit"]');
+
+      // 🔒 Zablokuj przycisk i zmień tekst
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.value = "Wysyłanie...";
+      }
+
+      // 👁️‍🗨️ Od razu pokaż wrapper z animacją
+      if (wpiszWrapper) wpiszWrapper.style.display = "none";
+      if (wyslanoWrapper) wyslanoWrapper.style.display = "flex";
 
       try {
         const { error } = await supabase.auth.resetPasswordForEmail(email);
 
         if (error) {
-          // ✉️ Jeśli wysłano za dużo, pokazujemy komunikat
+          // 🔄 Cofnij widoki
+          if (wpiszWrapper) wpiszWrapper.style.display = "block";
+          if (wyslanoWrapper) wyslanoWrapper.style.display = "none";
+
+          // 🔓 Przywróć guzik
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.value = "Zaktualizuj hasło";
+          }
+
           alert("Wysłałeś zbyt dużo próśb. Odczekaj chwilę i spróbuj ponownie. Jeśli problem będzie się powtarzał napisz do support@finapla.pl");
           console.error("Supabase reset error:", error);
-          return;
         }
 
-        // ✅ Sukces – pokazujemy ekran sukcesu
-        if (wpiszWrapper) wpiszWrapper.style.display = "none";
-        if (wyslanoWrapper) wyslanoWrapper.style.display = "flex";
-
       } catch (err) {
+        // 🔄 Cofnij wszystko
+        if (wpiszWrapper) wpiszWrapper.style.display = "block";
+        if (wyslanoWrapper) wyslanoWrapper.style.display = "none";
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.value = "Zaktualizuj hasło";
+        }
+
         console.error("Błąd resetowania hasła:", err);
         alert("Wystąpił nieoczekiwany błąd. Spróbuj ponownie za chwilę.");
       }
