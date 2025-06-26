@@ -757,6 +757,32 @@
       }
     });
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabMenu = document.querySelector(".w-tab-menu");
+
+      if (!tabMenu) return;
+
+      // Obserwujemy zmiany klas (czyli pojawienie się .w--current)
+      const observer = new MutationObserver(() => {
+        const activeTab = tabMenu.querySelector(".w--current");
+        if (activeTab) {
+          activeTab.scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest"
+          });
+        }
+      });
+
+      // Startujemy obserwację wszystkich zmian klas w tab menu
+      observer.observe(tabMenu, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["class"]
+      });
+    });
+  </script>
 </body>
 
 </html>
