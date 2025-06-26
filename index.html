@@ -376,8 +376,9 @@
 
             <!-- Popup potwierdzający -->
             <div id="delete-confirm-popup"
-              style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.65); z-index:9999; display:flex; justify-content:center; align-items:center; padding:20px;">
-              <div style="background:white; padding:30px; border-radius:12px; max-width:90%; text-align:center;">
+              style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.65); z-index:9999; display:none; justify-content:center; align-items:center; padding:20px;">
+              <div
+                style="background:white; padding:30px; border-radius:12px; max-width:400px; width:100%; text-align:center;">
                 <p style="font-size:18px; margin-bottom:20px;">Na pewno chcesz usunąć konto? Tej operacji nie można
                   cofnąć.</p>
                 <button id="confirm-delete"
@@ -385,21 +386,22 @@
                 <button id="cancel-delete" style="padding:10px 20px; border:none; border-radius:6px;">Anuluj</button>
               </div>
             </div>
-
           </div>
-          <div data-w-tab="Pomoc" id="Pomoc" class="tab-pane-pomoc w-tab-pane">
-            <div class="div-block-29">
-              <div class="title2">Potrzebujesz pomocy?</div>
-              <p class="paragraph-2">Masz pytania lub napotkałeś problem? Skontaktuj się z naszym zespołem – jesteśmy
-                tu, aby Ci pomóc.</p>
-              <a href="mailto:support@finapla.pl?subject=Zapytanie%20do%20Supportu%20finapla.pl"
-                class="link-block w-inline-block">
-                <p class="paragraph-2 link">support@finapla.pl</p>
-              </a>
-            </div>
+
+        </div>
+        <div data-w-tab="Pomoc" id="Pomoc" class="tab-pane-pomoc w-tab-pane">
+          <div class="div-block-29">
+            <div class="title2">Potrzebujesz pomocy?</div>
+            <p class="paragraph-2">Masz pytania lub napotkałeś problem? Skontaktuj się z naszym zespołem – jesteśmy
+              tu, aby Ci pomóc.</p>
+            <a href="mailto:support@finapla.pl?subject=Zapytanie%20do%20Supportu%20finapla.pl"
+              class="link-block w-inline-block">
+              <p class="paragraph-2 link">support@finapla.pl</p>
+            </a>
           </div>
         </div>
       </div>
+    </div>
     </div>
   </section>
   <section class="section">
@@ -688,7 +690,7 @@
       });
 
       cancelBtn?.addEventListener("click", () => {
-        popup.style.display = "none";
+        popup.style.display = "flex";
       });
 
       confirmBtn?.addEventListener("click", async () => {
