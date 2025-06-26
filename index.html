@@ -371,37 +371,22 @@
             </div>
             <div class="line-side"></div>
             <div class="usunkontowrapper">
-              <a href="#" class="link-2" id="delete-account-button">Usuń konto</a>
-            </div>
-
-            <!-- Popup potwierdzający -->
-            <div id="delete-confirm-popup"
-              style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.65); z-index:9999; display:none; justify-content:center; align-items:center; padding:20px;">
-              <div
-                style="background:white; padding:30px; border-radius:12px; max-width:400px; width:100%; text-align:center;">
-                <p style="font-size:18px; margin-bottom:20px;">Na pewno chcesz usunąć konto? Tej operacji nie można
-                  cofnąć.</p>
-                <button id="confirm-delete"
-                  style="margin-right:10px; background-color:red; color:white; padding:10px 20px; border:none; border-radius:6px;">Usuń</button>
-                <button id="cancel-delete" style="padding:10px 20px; border:none; border-radius:6px;">Anuluj</button>
-              </div>
+              <a href="#" class="link-2">Usuń konto</a>
             </div>
           </div>
-
-        </div>
-        <div data-w-tab="Pomoc" id="Pomoc" class="tab-pane-pomoc w-tab-pane">
-          <div class="div-block-29">
-            <div class="title2">Potrzebujesz pomocy?</div>
-            <p class="paragraph-2">Masz pytania lub napotkałeś problem? Skontaktuj się z naszym zespołem – jesteśmy
-              tu, aby Ci pomóc.</p>
-            <a href="mailto:support@finapla.pl?subject=Zapytanie%20do%20Supportu%20finapla.pl"
-              class="link-block w-inline-block">
-              <p class="paragraph-2 link">support@finapla.pl</p>
-            </a>
+          <div data-w-tab="Pomoc" id="Pomoc" class="tab-pane-pomoc w-tab-pane">
+            <div class="div-block-29">
+              <div class="title2">Potrzebujesz pomocy?</div>
+              <p class="paragraph-2">Masz pytania lub napotkałeś problem? Skontaktuj się z naszym zespołem – jesteśmy
+                tu, aby Ci pomóc.</p>
+              <a href="mailto:support@finapla.pl?subject=Zapytanie%20do%20Supportu%20finapla.pl"
+                class="link-block w-inline-block">
+                <p class="paragraph-2 link">support@finapla.pl</p>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </section>
   <section class="section">
@@ -678,45 +663,7 @@
         });
       });
 
-      // 🔥 Usuwanie konta z popupem
-      const deleteButton = document.getElementById("delete-account-button");
-      const popup = document.getElementById("delete-confirm-popup");
-      const confirmBtn = document.getElementById("confirm-delete");
-      const cancelBtn = document.getElementById("cancel-delete");
 
-      deleteButton?.addEventListener("click", (e) => {
-        e.preventDefault();
-        popup.style.display = "flex";
-      });
-
-      cancelBtn?.addEventListener("click", () => {
-        popup.style.display = "flex";
-      });
-
-      confirmBtn?.addEventListener("click", async () => {
-        confirmBtn.textContent = "Usuwanie...";
-        confirmBtn.disabled = true;
-
-        try {
-          // Usuń dane z user_config, users, itd.
-          await supabase.from("user_config").delete().eq("user_id", userId);
-          await supabase.from("users").delete().eq("user_id", userId);
-
-          // Usuń konto
-          const { error } = await supabase.auth.admin.deleteUser(userId);
-
-          if (error) {
-            alert("❌ Błąd przy usuwaniu konta: " + error.message);
-            console.error(error);
-          } else {
-            alert("✅ Konto zostało usunięte.");
-            window.location.href = "/"; // lub /logowanie/index.html
-          }
-        } catch (err) {
-          console.error("❌ Błąd usuwania konta:", err);
-          alert("Wystąpił nieoczekiwany błąd.");
-        }
-      });
       logoutButton?.addEventListener("click", async () => {
         await supabase.auth.signOut();
 
@@ -827,7 +774,6 @@
             infoBox.textContent = "❌ Wystąpił nieoczekiwany błąd.";
             infoBox.style.color = "red";
           }
-
         });
       }
     });
