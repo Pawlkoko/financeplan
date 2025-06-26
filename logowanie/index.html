@@ -89,51 +89,59 @@
       const emailInput = document.getElementById("email");
       const passwordInput = document.getElementById("password");
 
-      form.addEventListener("submit", async function (e) {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const email = emailInput.value;
-        const password = passwordInput.value;
+        const email = emailInput?.value?.trim();
+        if (!email) return;
+
+        const wpiszWrapper = document.querySelector(".wpiszemailwrapper");
+        const wyslanoWrapper = document.querySelector(".emailsentwrapper");
         const submitBtn = form.querySelector('input[type="submit"]');
 
-        submitBtn.disabled = true;
-        submitBtn.value = "Logowanie...";
-
-        const { data, error } = await client.auth.signInWithPassword({
-          email,
-          password
-        });
-
-        if (error) {
-          alert("❌ Błąd logowania: " + error.message);
-          submitBtn.disabled = false;
-          submitBtn.value = "Zaloguj się";
-          return;
+        // 🔒 Zablokuj przycisk i zmień tekst
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.value = "Wysyłanie...";
         }
 
-        // Ukryj formularz
-        document.querySelector(".logowanieformwrapper").style.display = "none";
-        document.querySelector(".logowanieanimation").style.display = "flex";
+        // 👁️‍🗨️ Od razu pokaż wrapper z animacją
+        if (wpiszWrapper) wpiszWrapper.style.display = "none";
+        if (wyslanoWrapper) wyslanoWrapper.style.display = "flex";
 
-        // Dodaj usera do user_config jeśli go nie ma
-        const userId = data.user.id;
+        try {
+          const { error } = await supabase.auth.resetPasswordForEmail(email);
 
-        const { data: existingUser } = await client
-          .from("user_config")
-          .select("user_id")
-          .eq("user_id", userId)
-          .maybeSingle();
+          if (error) {
+            // 🔄 Cofnij widoki
+            if (wpiszWrapper) wpiszWrapper.style.display = "block";
+            if (wyslanoWrapper) wyslanoWrapper.style.display = "none";
 
-        if (!existingUser) {
-          await client
-            .from("user_config")
-            .insert([{ user_id: userId, email, created_at: new Date().toISOString() }]);
+            // 🔓 Przywróć guzik
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.value = "Zaktualizuj hasło";
+            }
+
+            alert("Wysłałeś zbyt dużo próśb. Odczekaj chwilę i spróbuj ponownie. Jeśli problem będzie się powtarzał napisz do support@finapla.pl");
+            console.error("Supabase reset error:", error);
+          }
+
+        } catch (err) {
+          // 🔄 Cofnij wszystko
+          if (wpiszWrapper) wpiszWrapper.style.display = "block";
+          if (wyslanoWrapper) wyslanoWrapper.style.display = "none";
+
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.value = "Zaktualizuj hasło";
+          }
+
+          console.error("Błąd resetowania hasła:", err);
+          alert("Wystąpił nieoczekiwany błąd. Spróbuj ponownie za chwilę.");
         }
-
-        setTimeout(() => {
-          window.location.href = "https://financeplan-topaz.vercel.app/";
-        }, 1000); // krótki delay dla animacji
       });
+
     });
   </script>
 </body>
