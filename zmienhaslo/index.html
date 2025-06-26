@@ -47,7 +47,8 @@
                   taki istnieje w bazie, wyślemy na niego link do zmiany hasła.</label><input class="text-field w-input"
                   maxlength="256" name="email" data-name="Email" placeholder="Podaj email Twojego konta" type="email"
                   id="email" required=""><input type="submit" data-wait="Wysyłanie..."
-                  class="submit-button seckondary w-button" value="Zaktualizuj hasło"></form>
+                  class="submit-button seckondary w-button" value="Zaktualizuj hasło">
+              </form>
               <div class="w-form-done">
                 <div>Thank you! Your submission has been received!</div>
               </div>
@@ -91,7 +92,7 @@
 
       if (error) {
         console.error('Błąd:', error.message)
-        alert('Coś poszło nie tak. Sprawdź email lub spróbuj ponownie później.')
+        alert('Otrzymaliśmy zbyt dużo zapytań naraz. Odczekaj chwilę i spróbuj ponownie. Jeśli e-mail nie przychodzi, skontaktuj się z support@finapla.pl')
       } else {
         document.querySelector('.wpiszemailwrapper').style.display = 'none'
         document.querySelector('.emailsentwrapper').style.display = 'block'
