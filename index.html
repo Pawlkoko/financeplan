@@ -646,10 +646,13 @@
         });
       });
 
-      // 🚪 Wylogowanie
       logoutButton?.addEventListener("click", async () => {
         await supabase.auth.signOut();
-        window.location.href = "/logowanie/index.html";
+
+        // Odczekaj chwilę, żeby mieć pewność że sesja została usunięta
+        setTimeout(() => {
+          window.location.href = "/logowanie/index.html?logout=" + Date.now(); // unikalny URL by uniknąć cache
+        }, 300); // 300 ms
       });
 
       // ✉️ Aktualizacja adresu e-mail
