@@ -756,13 +756,16 @@
         });
       }
     });
-  </script>
-  <script type="module">
-    const tabMenu = document.querySelector(".w-tab-menu");
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    // Uruchamiaj tylko na tablet i mobile (szerokość do 991px)
+    if (window.innerWidth > 991) return;
 
-    if (!tabMenu) return;
+      const tabMenu = document.querySelector(".w-tab-menu");
 
-    const observer = new MutationObserver(() => {
+      if (!tabMenu) return;
+
+    const scrollActiveTabIntoView = () => {
       const activeTab = tabMenu.querySelector(".w--current");
       if (activeTab) {
         activeTab.scrollIntoView({
@@ -771,13 +774,18 @@
           block: "nearest"
         });
       }
-    });
+    };
 
-    observer.observe(tabMenu, {
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class"]
+      // Scroll na starcie (np. przy odświeżeniu z aktywnym tabem)
+      scrollActiveTabIntoView();
+
+    // Scroll po kliknięciu w dowolny tab
+    tabMenu.querySelectorAll('.w-tab-link').forEach(tab => {
+        tab.addEventListener('click', () => {
+          setTimeout(scrollActiveTabIntoView, 100); // małe opóźnienie, żeby Webflow zdążył dodać klasę .w--current
+        });
     });
+  });
   </script>
 </body>
 
