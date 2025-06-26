@@ -676,7 +676,45 @@
         });
       });
 
+      // 🔥 Usuwanie konta z popupem
+      const deleteButton = document.getElementById("delete-account-button");
+      const popup = document.getElementById("delete-confirm-popup");
+      const confirmBtn = document.getElementById("confirm-delete");
+      const cancelBtn = document.getElementById("cancel-delete");
 
+      deleteButton?.addEventListener("click", (e) => {
+        e.preventDefault();
+        popup.style.display = "flex";
+      });
+
+      cancelBtn?.addEventListener("click", () => {
+        popup.style.display = "none";
+      });
+
+      confirmBtn?.addEventListener("click", async () => {
+        confirmBtn.textContent = "Usuwanie...";
+        confirmBtn.disabled = true;
+
+        try {
+          // Usuń dane z user_config, users, itd.
+          await supabase.from("user_config").delete().eq("user_id", userId);
+          await supabase.from("users").delete().eq("user_id", userId);
+
+          // Usuń konto
+          const { error } = await supabase.auth.admin.deleteUser(userId);
+
+          if (error) {
+            alert("❌ Błąd przy usuwaniu konta: " + error.message);
+            console.error(error);
+          } else {
+            alert("✅ Konto zostało usunięte.");
+            window.location.href = "/"; // lub /logowanie/index.html
+          }
+        } catch (err) {
+          console.error("❌ Błąd usuwania konta:", err);
+          alert("Wystąpił nieoczekiwany błąd.");
+        }
+      });
       logoutButton?.addEventListener("click", async () => {
         await supabase.auth.signOut();
 
@@ -787,45 +825,7 @@
             infoBox.textContent = "❌ Wystąpił nieoczekiwany błąd.";
             infoBox.style.color = "red";
           }
-          // 🔥 Usuwanie konta z popupem
-          const deleteButton = document.getElementById("delete-account-button");
-          const popup = document.getElementById("delete-confirm-popup");
-          const confirmBtn = document.getElementById("confirm-delete");
-          const cancelBtn = document.getElementById("cancel-delete");
 
-          deleteButton?.addEventListener("click", (e) => {
-            e.preventDefault();
-            popup.style.display = "flex";
-          });
-
-          cancelBtn?.addEventListener("click", () => {
-            popup.style.display = "none";
-          });
-
-          confirmBtn?.addEventListener("click", async () => {
-            confirmBtn.textContent = "Usuwanie...";
-            confirmBtn.disabled = true;
-
-            try {
-              // Usuń dane z user_config, users, itd.
-              await supabase.from("user_config").delete().eq("user_id", userId);
-              await supabase.from("users").delete().eq("user_id", userId);
-
-              // Usuń konto
-              const { error } = await supabase.auth.admin.deleteUser(userId);
-
-              if (error) {
-                alert("❌ Błąd przy usuwaniu konta: " + error.message);
-                console.error(error);
-              } else {
-                alert("✅ Konto zostało usunięte.");
-                window.location.href = "/"; // lub /logowanie/index.html
-              }
-            } catch (err) {
-              console.error("❌ Błąd usuwania konta:", err);
-              alert("Wystąpił nieoczekiwany błąd.");
-            }
-          });
         });
       }
     });
