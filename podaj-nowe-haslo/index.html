@@ -76,7 +76,7 @@
     );
 
     const url = new URL(window.location.href);
-    const accessToken = url.hash?.split("access_token=")[1]?.split("&")[0];
+    const accessToken = url.searchParams.get("access_token");
 
     if (!accessToken) {
       alert("Brak tokenu dostępu. Otwórz link resetu hasła z e-maila.");
