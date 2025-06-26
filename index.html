@@ -763,7 +763,6 @@
 
       if (!tabMenu) return;
 
-      // Obserwujemy zmiany klas (czyli pojawienie się .w--current)
       const observer = new MutationObserver(() => {
         const activeTab = tabMenu.querySelector(".w--current");
         if (activeTab) {
@@ -775,7 +774,6 @@
         }
       });
 
-      // Startujemy obserwację wszystkich zmian klas w tab menu
       observer.observe(tabMenu, {
         subtree: true,
         attributes: true,
