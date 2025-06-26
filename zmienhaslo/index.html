@@ -87,7 +87,7 @@
       if (!email) return alert('Wpisz poprawny email.')
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'https://financeplan-topaz.vercel.app/zresetuj-haslo.html' // <- link do strony gdzie użytkownik zmieni hasło
+        redirectTo: 'https://financeplan-topaz.vercel.app/podajnowehaslo/index.html' // <- link do strony gdzie użytkownik zmieni hasło
       })
 
       if (error) {
