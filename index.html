@@ -757,29 +757,26 @@
       }
     });
   </script>
+  <script type="module">
+    const tabMenu = document.querySelector(".w-tab-menu");
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const tabMenu = document.querySelector(".w-tab-menu");
+    if (!tabMenu) return;
 
-      if (!tabMenu) return;
+    const observer = new MutationObserver(() => {
+      const activeTab = tabMenu.querySelector(".w--current");
+      if (activeTab) {
+        activeTab.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest"
+        });
+      }
+    });
 
-      const observer = new MutationObserver(() => {
-        const activeTab = tabMenu.querySelector(".w--current");
-        if (activeTab) {
-          activeTab.scrollIntoView({
-            behavior: "smooth",
-            inline: "center",
-            block: "nearest"
-          });
-        }
-      });
-
-      observer.observe(tabMenu, {
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["class"]
-      });
+    observer.observe(tabMenu, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class"]
     });
   </script>
 </body>
