@@ -86,12 +86,10 @@
 
       if (error) {
         console.error('Błąd:', error.message)
-        document.querySelector('.w-form-fail').style.display = 'block'
-        document.querySelector('.w-form-done').style.display = 'none'
+        alert('Coś poszło nie tak. Sprawdź email lub spróbuj ponownie później.')
       } else {
-        document.querySelector('.w-form-done').style.display = 'block'
-        document.querySelector('.w-form-fail').style.display = 'none'
-        document.getElementById('email-form').style.display = 'none'
+        document.querySelector('.wpiszemailwrapper').style.display = 'none'
+        document.querySelector('.emailsentwrapper').style.display = 'block'
       }
     })
   </script>
