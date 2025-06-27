@@ -76,17 +76,26 @@
     );
 
     const url = new URL(window.location.href);
-    const accessToken = url.searchParams.get("access_token");
+    // Pobierz tokeny z fragmentu URL (#access_token=...)
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = hashParams.get("access_token");
+    const refreshToken = hashParams.get("refresh_token");
+    const type = hashParams.get("type");
 
-    if (!accessToken) {
+    // Sprawdź i ustaw sesję
+    if (accessToken && refreshToken && type === "recovery") {
+      const { error } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
+
+      if (error) {
+        alert("Błąd sesji. Spróbuj ponownie przez link z maila.");
+      }
+    } else {
       alert("Brak tokenu dostępu. Otwórz link resetu hasła z e-maila.");
-      throw new Error("Brak access_token");
     }
 
-    const { error: sessionError } = await supabase.auth.setSession({
-      access_token: accessToken,
-      refresh_token: ""
-    });
 
     if (sessionError) {
       alert("Błąd sesji. Spróbuj ponownie przez link z maila.");
