@@ -102,10 +102,9 @@
     const wrapper = document.querySelector(".wpiszemailwrapper");
     const success = document.querySelector(".passwordupdated");
 
-    const submitBtn = document.querySelector("input[type='submit']");
-    const passwordInput1 = inputs[0];
-    const passwordInput2 = inputs[1];
-    submitBtn.addEventListener("click", async () => {
+    submitBtn.addEventListener("click", async (event) => {
+      event.preventDefault(); // ⛔ zatrzymaj domyślne wysłanie formularza
+
       const password1 = passwordInput1.value;
       const password2 = passwordInput2.value;
 
@@ -120,7 +119,7 @@
       }
 
       submitBtn.disabled = true;
-      submitBtn.innerText = "Czekaj...";
+      submitBtn.value = "Czekaj...";
 
       const { error: updateError } = await supabase.auth.updateUser({
         password: password1,
@@ -130,19 +129,19 @@
         alert("Błąd przy aktualizacji hasła: " + updateError.message);
         console.error(updateError);
         submitBtn.disabled = false;
-        submitBtn.innerText = "Zaktualizuj hasło";
+        submitBtn.value = "Zaktualizuj hasło";
         return;
       }
 
-      // ✅ SUKCES — pokazujemy komunikat, chowamy formularz
-      document.getElementById("passwordupdated").style.display = "block";
-      document.getElementById("wpiszemailwrapper").style.display = "none";
+      // ✅ SUKCES
+      success.style.display = "block";
+      wrapper.style.display = "none";
 
-      // (Opcjonalnie) Przekierowanie po 3 sekundach
       setTimeout(() => {
         window.location.href = "/logowanie";
       }, 3000);
     });
+
   </script>
 </body>
 
