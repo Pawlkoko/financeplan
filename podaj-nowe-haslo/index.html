@@ -102,38 +102,41 @@
     const wrapper = document.querySelector(".wpiszemailwrapper");
     const success = document.querySelector(".passwordupdated");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    submitBtn.addEventListener("click", async () => {
+      const password1 = passwordInput1.value;
+      const password2 = passwordInput2.value;
 
-      const pass1 = inputs[0]?.value?.trim();
-      const pass2 = inputs[1]?.value?.trim();
+      // Ukryj na wszelki wypadek komunikat na start
+      document.getElementById("passwordupdated").style.display = "none";
 
-      if (!pass1 || pass1.length < 6) {
+      if (password1.length < 6) {
         alert("Hasło musi mieć minimum 6 znaków.");
         return;
       }
 
-      if (pass1 !== pass2) {
+      if (password1 !== password2) {
         alert("Hasła nie są takie same.");
         return;
       }
 
-      // Deaktywuj guzik i zmień tekst
-      button.disabled = true;
-      const originalText = button.value;
-      button.value = "Czekaj...";
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Czekaj...";
 
-      const { error } = await supabase.auth.updateUser({ password: pass1 });
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: password1,
+      });
 
-      if (error) {
-        alert("❌ Błąd: " + error.message);
-        console.error(error);
-        button.disabled = false;
-        button.value = originalText;
-      } else {
-        wrapper?.classList.add("hidden");
-        success?.classList.remove("hidden");
+      if (updateError) {
+        alert("Błąd przy aktualizacji hasła: " + updateError.message);
+        console.error(updateError);
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Zaktualizuj hasło";
+        return;
       }
+
+      // ✅ SUKCES: pokaż "passwordupdated", ukryj "wpiszemailwrapper"
+      document.getElementById("passwordupdated").style.display = "block";
+      document.getElementById("wpiszemailwrapper").style.display = "none";
     });
   </script>
 </body>
