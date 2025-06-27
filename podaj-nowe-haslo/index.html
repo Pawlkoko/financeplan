@@ -96,13 +96,6 @@
       alert("Brak tokenu dostępu. Otwórz link resetu hasła z e-maila.");
     }
 
-
-    if (sessionError) {
-      alert("Błąd sesji. Spróbuj ponownie przez link z maila.");
-      console.error("Supabase session error:", sessionError);
-      throw sessionError;
-    }
-
     const form = document.querySelector("#email-form");
     const inputs = form.querySelectorAll("input[type='password']");
     const button = form.querySelector("input[type='submit']");
