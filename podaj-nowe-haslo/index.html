@@ -102,12 +102,12 @@
     const wrapper = document.querySelector(".wpiszemailwrapper");
     const success = document.querySelector(".passwordupdated");
 
+    const submitBtn = document.querySelector("input[type='submit']");
+    const passwordInput1 = inputs[0];
+    const passwordInput2 = inputs[1];
     submitBtn.addEventListener("click", async () => {
       const password1 = passwordInput1.value;
       const password2 = passwordInput2.value;
-
-      // Ukryj na wszelki wypadek komunikat na start
-      document.getElementById("passwordupdated").style.display = "none";
 
       if (password1.length < 6) {
         alert("Hasło musi mieć minimum 6 znaków.");
@@ -134,9 +134,14 @@
         return;
       }
 
-      // ✅ SUKCES: pokaż "passwordupdated", ukryj "wpiszemailwrapper"
+      // ✅ SUKCES — pokazujemy komunikat, chowamy formularz
       document.getElementById("passwordupdated").style.display = "block";
       document.getElementById("wpiszemailwrapper").style.display = "none";
+
+      // (Opcjonalnie) Przekierowanie po 3 sekundach
+      setTimeout(() => {
+        window.location.href = "/logowanie";
+      }, 3000);
     });
   </script>
 </body>
