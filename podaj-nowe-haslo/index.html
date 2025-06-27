@@ -101,7 +101,9 @@
     const button = form.querySelector("input[type='submit']");
     const wrapper = document.querySelector(".wpiszemailwrapper");
     const success = document.querySelector(".passwordupdated");
-
+    const submitBtn = document.querySelector("input[type='submit']");
+    const passwordInput1 = inputs[0];
+    const passwordInput2 = inputs[1];
     submitBtn.addEventListener("click", async (event) => {
       event.preventDefault(); // ⛔ zatrzymaj domyślne wysłanie formularza
 
