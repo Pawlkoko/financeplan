@@ -775,16 +775,16 @@
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
     const supabase = createClient(
-      'https://lgpqzvvlzkzspvabjhwi.supabase.co', // 🔁 <- podmień jeśli masz inną instancję
-      'YOUR_PUBLIC_ANON_KEY'                      // 🔁 <- podmień na swój publiczny klucz anon
+      'https://lgpqzvvlzkzspvabjhwi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...twoj-publiczny-anon-key'
     );
 
     document.addEventListener("DOMContentLoaded", async () => {
-      const form = document.querySelector("#email-form-2");
-      const button = form?.querySelector('input[type="submit"]');
-
       const { data: { user } } = await supabase.auth.getUser();
       const userId = user?.id;
+
+      const form = document.querySelector("#email-form-2");
+      const button = form?.querySelector('input[type="submit"]');
 
       if (form && button && userId) {
         form.addEventListener("submit", async (e) => {
@@ -819,10 +819,11 @@
           }
         });
       } else {
-        console.warn("🚫 Formularz lub user_id niedostępne – user nie jest zalogowany?");
+        console.warn("🚫 Brak usera lub formularza.");
       }
     });
   </script>
+
 </body>
 
 </html>
