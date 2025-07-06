@@ -834,7 +834,70 @@
       });
     });
   </script>
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
+  <!-- Obsługa guzika Kup Teraz -->
+  <script>
+    const supabase = supabase.createClient(
+      "https://lgpqzvvlzkzspvabjhwi.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...TWOJ_PUBLIC_KEY"
+    );
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const form = document.querySelector("#email-form-2");
+      const button = form?.querySelector('input[type="submit"]');
+
+      if (!form || !button) {
+        console.warn("Nie znaleziono formularza lub przycisku.");
+        return;
+      }
+
+      // Wyłączamy domyślną obsługę Webflow
+      form.setAttribute("data-wf-ignore", "true");
+
+      const { data: { user }, error } = await supabase.auth.getUser();
+      const userId = user?.id;
+
+      if (!userId) {
+        console.warn("Użytkownik nie jest zalogowany – nie wyślemy webhooka.");
+        return;
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        button.value = "Łączenie z Stripe...";
+        button.disabled = true;
+
+        try {
+          const res = await fetch("https://pawelko.app.n8n.cloud/webhook-test/create-checkout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ user_id: userId })
+          });
+
+          const data = await res.json();
+
+          if (data?.checkout_url) {
+            window.location.href = data.checkout_url;
+          } else {
+            alert("❌ Błąd: Brak checkout_url.");
+            console.error(data);
+          }
+        } catch (err) {
+          alert("❌ Błąd przy łączeniu z webhookiem.");
+          console.error(err);
+        } finally {
+          button.value = "Kup teraz";
+          button.disabled = false;
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>
