@@ -287,11 +287,20 @@
                 <h1 class="subtitle">Pozwól finapli wyręczyć Cię w katalogowaniu wydatków...</h1>
                 <h1 class="subtitle-copy">...za jedyne 14,99zł!</h1>
                 <div class="w-form">
-                  <form id="email-form-2" name="email-form-2" method="get" class="form-2"
+                  <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get" class="form-2"
                     data-wf-page-id="682b7e84a37f1c21053d0196"
-                    data-wf-element-id="8fc5ab50-1846-a60f-fb92-a1fc7b728104">
-                    <input type="submit" data-wait="Please wait..." class="submit-button-2 w-button" value="Kup teraz">
-                  </form>
+                    data-wf-element-id="8fc5ab50-1846-a60f-fb92-a1fc7b728104"><label
+                      class="w-checkbox checkbox-field"><input type="checkbox" name="checkbox" id="checkbox"
+                        data-name="Checkbox" required="" class="w-checkbox-input checkbox"><span
+                        class="checkbox-label w-form-label" for="checkbox">Akceptuję regulamin oraz politykę
+                        prywatności</span></label><input type="submit" data-wait="Please wait..."
+                      class="submit-button-2 w-button" value="Kup teraz"></form>
+                  <div class="w-form-done">
+                    <div>Thank you! Your submission has been received!</div>
+                  </div>
+                  <div class="w-form-fail">
+                    <div>Oops! Something went wrong while submitting the form.</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -449,55 +458,321 @@
       display: none !important;
     }
   </style>
-  <script type="module" defer>
+  <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
     const supabase = createClient(
       "https://vptpascqhmpmgnufevks.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0"
     );
-
+    document.querySelectorAll(".w-form-done, .w-form-fail").forEach(el => {
+      el.style.display = "none";
+    }); //  Ukrywamy domyślne Webflowowe komunikaty formularza
     document.addEventListener("DOMContentLoaded", async () => {
+      const emailText = document.querySelector(".text-block-3");
+      const logoutButton = document.querySelector(".button-primary.w-button");
+
       const { data: { session } } = await supabase.auth.getSession();
-      const userId = session?.user?.id;
 
-      // kod dashboardu...
+      if (!session?.user) {
+        window.location.href = "/logowanie/index.html";
+        return;
+      }
 
-      // 🛒 Obsługa guzika „Kup teraz”
-      const form = document.querySelector("#email-form-2");
-      const button = form?.querySelector('input[type="submit"]');
+      const userId = session.user.id;
+      const email = session.user.email;
 
-      if (form && button) {
-        form.setAttribute("data-wf-ignore", "true");
+      console.log("📌 Zalogowany userId:", userId);
+      console.log("📌 Email użytkownika:", email);
+      if (emailText) emailText.innerText = email;
 
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
+      // 📊 Liczba użyć → do podsumowania
+      try {
+        let uses = 0;
+        const { data: usageRow, error: usageError } = await supabase
+          .from("user_config")
+          .select("UsesCount")
+          .eq("user_id", userId)
+          .single();
 
-          button.value = "Łączenie z Stripe...";
-          button.disabled = true;
+        if (usageError) {
+          console.error("Błąd pobierania UsesCount:", usageError);
+        } else {
+          uses = usageRow?.UsesCount || 0;
+          const minutes = Math.round(uses * 2.67);
+
+          const usesSpan = document.getElementById("uses-count");
+          const minutesSpan = document.getElementById("minutes-saved");
+
+          if (usesSpan) usesSpan.textContent = uses;
+          if (minutesSpan) minutesSpan.textContent = minutes;
+        }
+        // 🔟 Wersja Demo – pokazuj X/10 jeśli X < 10
+        const demoCountText = document.querySelector(".text-block-16");
+        if (demoCountText) {
+          const limitedUses = Math.min(uses, 10);
+          demoCountText.textContent = `${limitedUses}/10`;
+        }
+
+
+      } catch (err) {
+        console.error("Błąd JS przy UsesCount:", err);
+      }
+      // 🔗 Pokazuj sekcję wydatków tylko jeśli istnieje spreadsheet_link
+      const openSheetBtn = document.getElementById("open-sheet-button");
+      const wydatkiWrapper = document.getElementById("wydatki-wrapper");
+
+      if (wydatkiWrapper) {
+        wydatkiWrapper.classList.add("hidden"); // ukryj domyślnie
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("user_config")
+          .select("spreadsheet_link")
+          .eq("user_id", userId)
+          .single();
+
+        const link = data?.spreadsheet_link?.trim();
+
+        if (link && wydatkiWrapper) {
+          wydatkiWrapper.classList.remove("hidden");
+
+          if (openSheetBtn) {
+            openSheetBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              window.open(link, "_blank");
+            });
+          }
+        } else {
+          console.log("🔒 Brak spreadsheet_link – sekcja ukryta.");
+        }
+      } catch (err) {
+        console.error("❌ Błąd pobierania spreadsheet_link:", err);
+      }
+      // 🧠 Jeśli user nie istnieje w tabeli `users` – dopisz
+      const { data: existingUser } = await supabase
+        .from("users")
+        .select("user_id")
+        .eq("user_id", userId)
+        .single();
+
+      if (!existingUser) {
+        await supabase.from("users").insert([{
+          user_id: userId,
+          email: email,
+          created_at: new Date().toISOString()
+        }]);
+      }
+
+      // 🤖 Sprawdzenie botów
+      const edytujWrapper = document.querySelector(".edytujbotawrapper");
+      const prawieWrapper = document.querySelector(".prawiegotowewrapper");
+
+      try {
+        const { data: configRows, error } = await supabase
+          .from("user_config")
+          .select("telegram_id, WhatsappNr, messenger_id")
+          .eq("user_id", userId)
+          .limit(1);
+
+        if (error) {
+          console.error("Supabase error:", error);
+        }
+
+        const configRow = configRows?.[0];
+        const hasTelegram = !!configRow?.telegram_id?.trim?.();
+        const hasWhatsapp = !!configRow?.WhatsappNr?.trim?.();
+        const hasMessenger = !!configRow?.messenger_id?.trim?.();
+
+        const hasAnyBot = hasTelegram || hasWhatsapp || hasMessenger;
+
+        if (hasAnyBot) {
+          edytujWrapper?.classList.remove("hidden");
+          prawieWrapper?.classList.add("hidden");
+        } else {
+          edytujWrapper?.classList.add("hidden");
+          prawieWrapper?.classList.remove("hidden");
+        }
+      } catch (err) {
+        console.error("Błąd JS podczas sprawdzania botów:", err);
+      }
+
+      // 🔘 Telegram
+      const telegramBtns = document.querySelectorAll("a.submit-button.w-button");
+      telegramBtns.forEach((btn) => {
+        const text = btn.textContent.toLowerCase();
+        if (text.includes("telegram")) {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const botUsername = "Persxfinance_bot";
+            const link = `https://t.me/${botUsername}?start=${userId}`;
+            window.open(link, "_blank");
+          });
+        }
+      });
+
+      // 🔘 WhatsApp
+      const whatsappBtns = document.querySelectorAll("a.submit-button.w-button");
+      whatsappBtns.forEach((btn) => {
+        const text = btn.textContent.toLowerCase();
+        if (text.includes("whasapp")) {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const message = encodeURIComponent(`START_${userId}`);
+            const link = `https://wa.me/15556535033?text=${message}`;
+            window.open(link, "_blank");
+          });
+        }
+      });
+
+      // 💾 Pobieranie danych jako PDF, CSV, XLS, XLSX
+      const exportButtons = document.querySelectorAll("[data-export-format]");
+      exportButtons.forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const format = btn.dataset.exportFormat;
+          const originalText = btn.textContent;
+
+          // Zmień tekst i zablokuj przycisk
+          btn.textContent = `Eksportuję .${format.toUpperCase()}...`;
+          btn.style.pointerEvents = "none";
+          btn.style.opacity = "0.6";
+
+          const url = `https://pawelko.app.n8n.cloud/webhook/840a2962-364c-4f24-b640-3c9e22502c47?user_id=${userId}&format=${format}`;
 
           try {
-            const res = await fetch("https://pawelko.app.n8n.cloud/webhook-test/create-checkout", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ user_id: userId })
-            });
+            const res = await fetch(url);
+            const blob = await res.blob();
 
-            const data = await res.json();
-
-            if (data?.checkout_url) {
-              window.location.href = data.checkout_url;
-            } else {
-              alert("❌ Brak checkout_url.");
-              console.error(data);
-            }
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = `wydatki.${format}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(a.href);
           } catch (err) {
-            alert("❌ Błąd przy łączeniu z webhookiem.");
+            alert("❌ Wystąpił błąd podczas pobierania pliku.");
             console.error(err);
           } finally {
-            button.value = "Kup teraz";
-            button.disabled = false;
+            // Przywróć przycisk
+            btn.textContent = originalText;
+            btn.style.pointerEvents = "auto";
+            btn.style.opacity = "1";
+          }
+        });
+      });
+
+
+      logoutButton?.addEventListener("click", async () => {
+        await supabase.auth.signOut();
+
+        // Odczekaj chwilę, żeby mieć pewność że sesja została usunięta
+        setTimeout(() => {
+          window.location.href = "/logowanie/index.html?logout=" + Date.now(); // unikalny URL by uniknąć cache
+        }, 300); // 300 ms
+      });
+
+      // ✉️ Aktualizacja adresu e-mail
+      const updateEmailForm = document.querySelector('form[name="email-form-email"]');
+
+      if (updateEmailForm) {
+        updateEmailForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const newEmailInput = document.querySelector("#NewEmail");
+          const newEmail = newEmailInput?.value?.trim();
+
+          if (!newEmail) {
+            alert("Podaj nowy adres e-mail.");
+            return;
+          }
+
+          try {
+            const { data, error } = await supabase.auth.updateUser({ email: newEmail });
+
+            if (error) {
+              alert("❌ Błąd przy zmianie adresu e-mail: " + error.message);
+              console.error("Błąd Supabase:", error);
+            } else {
+              alert("✅ Na nowy adres został wysłany e-mail weryfikacyjny. ⚠️ Zmiana adresu e - mail wymaga potwierdzenia na obecnym i nowym adresie. Sprawdź obie skrzynki!");
+              newEmailInput.value = "";
+            }
+          } catch (err) {
+            console.error("❌ Błąd JS:", err);
+            alert("Wystąpił nieoczekiwany błąd.");
+          }
+        });
+      }
+      // 🔐 Zmiana hasła
+      const updatePasswordForm = document.querySelector('form#email-form[name="email-form-password"] .passwordupdateform, .passwordupdateform form');
+
+      if (updatePasswordForm) {
+        updatePasswordForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const oldPasswordInput = document.querySelector("#OldPassword");
+          const newPasswordInput = document.querySelector("#NewPassword");
+          const repeatPasswordInput = document.querySelector("#RepeatPassword");
+          const infoBox = document.getElementById("password-update-info");
+
+          const oldPassword = oldPasswordInput?.value.trim();
+          const newPassword = newPasswordInput?.value.trim();
+          const repeatPassword = repeatPasswordInput?.value.trim();
+
+          // Proste walidacje
+          if (!oldPassword || !newPassword || !repeatPassword) {
+            infoBox.textContent = "❗Uzupełnij wszystkie pola.";
+            infoBox.style.color = "red";
+            return;
+          }
+
+          if (newPassword.length < 6) {
+            infoBox.textContent = "❗Nowe hasło musi mieć min. 6 znaków.";
+            infoBox.style.color = "red";
+            return;
+          }
+
+          if (newPassword !== repeatPassword) {
+            infoBox.textContent = "❗Nowe hasła się nie zgadzają.";
+            infoBox.style.color = "red";
+            return;
+          }
+
+          try {
+            // Supabase nie wymaga starego hasła, ale my sprawdzimy login dla pewności
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+            const email = session?.user?.email;
+
+            const { error: loginError } = await supabase.auth.signInWithPassword({
+              email,
+              password: oldPassword,
+            });
+
+            if (loginError) {
+              infoBox.textContent = "❌ Błędne stare hasło.";
+              infoBox.style.color = "red";
+              return;
+            }
+
+            // Zmieniamy hasło
+            const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+            if (error) {
+              infoBox.textContent = "❌ Błąd przy zmianie hasła: " + error.message;
+              infoBox.style.color = "red";
+            } else {
+              infoBox.textContent = "✅ Hasło zostało zmienione!";
+              infoBox.style.color = "limegreen";
+              oldPasswordInput.value = "";
+              newPasswordInput.value = "";
+              repeatPasswordInput.value = "";
+            }
+          } catch (err) {
+            console.error("Błąd zmiany hasła:", err);
+            infoBox.textContent = "❌ Wystąpił nieoczekiwany błąd.";
+            infoBox.style.color = "red";
           }
         });
       }
