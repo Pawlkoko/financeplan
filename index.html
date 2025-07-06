@@ -772,54 +772,66 @@
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <!-- Stripe Trigger -->
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       const supabase = supabase.createClient(
-        'https://lgpqzvvlzkzspvabjhwi.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...twój-publiczny-klucz'
+        "https://lgpqzvvlzkzspvabjhwi.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...TWOJ_PUBLIC_KEY"
       );
 
-      const { data: { user } } = await supabase.auth.getUser();
+      const form = document.getElementById("email-form-2");
+      const button = form?.querySelector('input[type="submit"]');
+
+      // łapiemy usera
+      const { data: { user }, error } = await supabase.auth.getUser();
       const userId = user?.id;
 
-      const form = document.querySelector("#email-form-2");
-      const button = form?.querySelector('input[type=\"submit\"]');
-
-      if (form && button && userId) {
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          button.value = "Łączenie z Stripe...";
-          button.disabled = true;
-
-          try {
-            const res = await fetch("https://pawelko.app.n8n.cloud/webhook-test/create-checkout", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({ user_id: userId })
-            });
-
-            const data = await res.json();
-
-            if (data?.checkout_url) {
-              window.location.href = data.checkout_url;
-            } else {
-              alert("❌ Błąd: Brak checkout_url w odpowiedzi.");
-              console.error(data);
-            }
-          } catch (err) {
-            alert("❌ Wystąpił błąd przy łączeniu z webhookiem.");
-            console.error(err);
-          } finally {
-            button.value = "Kup teraz";
-            button.disabled = false;
-          }
-        });
-      } else {
-        console.warn("🚫 Brak usera lub formularza.");
+      if (!form || !button) {
+        console.warn("❌ Formularz lub guzik nie znaleziony");
+        return;
       }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // 🧠 Zatrzymujemy Webflowowe wysyłanie
+        e.stopPropagation();
+
+        if (!userId) {
+          alert("Nie jesteś zalogowany.");
+          return;
+        }
+
+        button.value = "Łączenie z Stripe...";
+        button.disabled = true;
+
+        try {
+          const res = await fetch("https://pawelko.app.n8n.cloud/webhook-test/create-checkout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ user_id: userId })
+          });
+
+          const data = await res.json();
+
+          if (data?.checkout_url) {
+            window.location.href = data.checkout_url;
+          } else {
+            alert("❌ Brak checkout_url.");
+            console.error(data);
+          }
+        } catch (err) {
+          alert("❌ Błąd przy łączeniu z webhookiem.");
+          console.error(err);
+        } finally {
+          button.value = "Kup teraz";
+          button.disabled = false;
+        }
+      });
     });
   </script>
 
