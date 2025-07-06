@@ -631,7 +631,7 @@
           btn.style.pointerEvents = "none";
           btn.style.opacity = "0.6";
 
-          const url = `https://pawelko.app.n8n.cloud/webhook/create-checkout?user_id=${userId}&format=${format}`;
+          const url = `https://pawelko.app.n8n.cloud/webhook/840a2962-364c-4f24-b640-3c9e22502c47?user_id=${userId}&format=${format}`;
 
           try {
             const res = await fetch(url);
@@ -784,7 +784,7 @@
           button.disabled = true;
 
           try {
-            const res = await fetch("https://pawelko.app.n8n.cloud/webhook-test/create-checkout", {
+            const res = await fetch("https://pawelko.app.n8n.cloud/webhook/create-checkout", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ user_id: userId }) // `userId` już masz wyżej w skrypcie
