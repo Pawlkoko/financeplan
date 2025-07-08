@@ -590,6 +590,33 @@
       } catch (err) {
         console.error("Błąd JS podczas sprawdzania botów:", err);
       }
+      // 🎫 Pokaż odpowiedni wrapper subskrypcji (Premium vs Trial)
+      try {
+        const { data: licenceData, error: licenceError } = await supabase
+          .from("user_config")
+          .select("LicenceType")
+          .eq("user_id", userId)
+          .single();
+
+        if (licenceError) {
+          console.error("❌ Błąd pobierania LicenceType:", licenceError);
+        } else {
+          const isPremium = licenceData?.LicenceType === "Premium";
+
+          const premiumWrapper = document.querySelector(".premiumversion");
+          const trialWrapper = document.querySelector(".trialversionwrapper");
+
+          if (isPremium) {
+            premiumWrapper?.classList.remove("hidden");
+            trialWrapper?.classList.add("hidden");
+          } else {
+            premiumWrapper?.classList.add("hidden");
+            trialWrapper?.classList.remove("hidden");
+          }
+        }
+      } catch (err) {
+        console.error("❌ Błąd JS podczas sprawdzania LicenceType:", err);
+      }
 
       // 🔘 Telegram
       const telegramBtns = document.querySelectorAll("a.submit-button.w-button");
