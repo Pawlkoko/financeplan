@@ -639,31 +639,6 @@
         }
       });
 
-      // 📅 Ustaw daty subskrypcji
-      const startDateElement = document.querySelector(".startdate");
-      const endDateElement = document.querySelector(".enddate");
-
-      const rawStartDate = licenceData?.SubAktywnyOd;
-      const rawEndDate = licenceData?.SubAktywnyDo;
-
-      if (rawStartDate && startDateElement) {
-        const start = new Date(rawStartDate);
-        startDateElement.textContent = start.toLocaleDateString("pl-PL", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-      }
-
-      if (rawEndDate && endDateElement) {
-        const end = new Date(rawEndDate);
-        endDateElement.textContent = end.toLocaleDateString("pl-PL", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-      }
-
       // 🔘 WhatsApp
       const whatsappBtns = document.querySelectorAll("a.submit-button.w-button");
       whatsappBtns.forEach((btn) => {
