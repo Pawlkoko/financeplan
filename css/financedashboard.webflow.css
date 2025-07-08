@@ -1239,6 +1239,12 @@
   display: flex;
 }
 
+@media screen and (max-width: 991px) {
+  .subinfowrapper {
+    flex-direction: column !important;
+  }
+}
+
 .image-9 {
   padding-bottom: 3px;
 }
