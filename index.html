@@ -460,7 +460,7 @@
     document.querySelectorAll(".w-form-done, .w-form-fail").forEach(el => {
       el.style.display = "none";
     }); //  Ukrywamy domyślne Webflowowe komunikaty formularza
-    document.addEventListener("DOMContentLoaded", async () => {
+    Webflow.push(async () => {
       const emailText = document.querySelector(".text-block-3");
       const logoutButton = document.querySelector(".button-primary.w-button");
 
