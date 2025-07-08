@@ -591,6 +591,8 @@
         console.error("Błąd JS podczas sprawdzania botów:", err);
       }
       console.log("✅ Pomyślnie Ustawiono ekran subskrypcji!")
+
+
       // 🎫 Pokaż odpowiedni wrapper subskrypcji (Premium vs Trial)
       try {
         const { data: licenceData, error: licenceError } = await supabase
@@ -602,15 +604,19 @@
         if (licenceError) {
           console.error("❌ Błąd pobierania LicenceType:", licenceError);
         } else {
-          const isPremium = licenceData?.LicenceType === "Premium";
+          console.log("🎫 LicenceType z bazy:", licenceData?.LicenceType); // ← DEBUG
+
+          const isPremium = licenceData?.LicenceType?.toLowerCase?.() === "premium";
 
           const premiumWrapper = document.querySelector(".premiumversion");
           const trialWrapper = document.querySelector(".trialversionwrapper");
 
           if (isPremium) {
+            console.log("🔓 Pokazuję Premium");
             premiumWrapper?.classList.remove("hidden");
             trialWrapper?.classList.add("hidden");
           } else {
+            console.log("🔓 Pokazuję Trial");
             premiumWrapper?.classList.add("hidden");
             trialWrapper?.classList.remove("hidden");
           }
@@ -618,7 +624,6 @@
       } catch (err) {
         console.error("❌ Błąd JS podczas sprawdzania LicenceType:", err);
       }
-
       // 🔘 Telegram
       const telegramBtns = document.querySelectorAll("a.submit-button.w-button");
       telegramBtns.forEach((btn) => {
