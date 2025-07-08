@@ -2284,7 +2284,7 @@
   }
 
   .premiumversion {
-    display: none;
+    display: block;
   }
 
   .subscriptionstatuswrapper-copy {
