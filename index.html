@@ -590,6 +590,7 @@
       } catch (err) {
         console.error("Błąd JS podczas sprawdzania botów:", err);
       }
+      console.log("✅ Pomyślnie Ustawiono ekran subskrypcji!")
       // 🎫 Pokaż odpowiedni wrapper subskrypcji (Premium vs Trial)
       try {
         const { data: licenceData, error: licenceError } = await supabase
