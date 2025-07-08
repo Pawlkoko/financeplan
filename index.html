@@ -598,7 +598,7 @@
       try {
         const { data: licenceData, error: licenceError } = await supabase
           .from("user_config")
-          .select("LicenceType, SubAktywnyOd, SubAktywnyDo")
+          .select("LicenceType")
           .eq("user_id", userId)
           .single();
 
