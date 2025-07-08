@@ -1241,7 +1241,13 @@
 
 @media screen and (max-width: 991px) {
   .subinfowrapper {
+    display: flex !important;
     flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .subinfocolumn {
+    width: 100% !important;
   }
 }
 
