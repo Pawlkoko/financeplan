@@ -608,42 +608,7 @@
           console.log("🎫 LicenceType z bazy:", licenceData?.LicenceType); // ← DEBUG
 
           const isPremium = licenceData?.LicenceType?.toLowerCase?.() === "premium";
-          // 🎯 Pokaż odpowiedni wrapper Premium vs Trial
-          const premiumWrapper = document.querySelector(".premiumversion");
-          const trialWrapper = document.querySelector(".trialversionwrapper");
 
-          if (isPremium) {
-            premiumWrapper?.classList.remove("hidden");
-            trialWrapper?.classList.add("hidden");
-          } else {
-            premiumWrapper?.classList.add("hidden");
-            trialWrapper?.classList.remove("hidden");
-          }
-
-          // 📅 Wstaw daty subskrypcji
-          const startDateElement = document.querySelector(".startdate");
-          const endDateElement = document.querySelector(".enddate");
-
-          const rawStartDate = licenceData?.SubAktywnyOd;
-          const rawEndDate = licenceData?.SubAktywnyDo;
-
-          if (rawStartDate && startDateElement) {
-            const start = new Date(rawStartDate);
-            startDateElement.textContent = start.toLocaleDateString("pl-PL", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
-          }
-
-          if (rawEndDate && endDateElement) {
-            const end = new Date(rawEndDate);
-            endDateElement.textContent = end.toLocaleDateString("pl-PL", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
-          }
           const premiumWrapper = document.querySelector(".premiumversion");
           const trialWrapper = document.querySelector(".trialversionwrapper");
 
