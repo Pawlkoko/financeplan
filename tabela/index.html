@@ -89,9 +89,8 @@
   <div class="loginwrapper">
     <div class="loginandtextwrapper">
       <div class="logowanieprawawrapper">
-        <input type="text" id="searchInput" placeholder="Szukaj..." style="margin: 10px; padding: 6px; width: 200px;">
-
         <div id=tabelawrapper class="tabelawrapper"></div>
+        <input type="text" id="searchInput" placeholder="Szukaj..." style="margin: 10px; padding: 6px; width: 200px;">
         <div class="backbuttonwrapper">
           <a href="https://financeplan-topaz.vercel.app/" class="link-block w-inline-block"><img
               src="images/arrow-white-finapla.svg" loading="lazy" width="8" alt="">
@@ -160,21 +159,12 @@
         th.addEventListener("click", () => {
           const rows = Array.from(table.querySelectorAll("tbody tr"));
           const asc = !th.classList.contains("sorted-asc");
-          const monthOrder = {
-            "styczeń": 1, "luty": 2, "marzec": 3, "kwiecień": 4, "maj": 5, "czerwiec": 6,
-            "lipiec": 7, "sierpień": 8, "wrzesień": 9, "październik": 10, "listopad": 11, "grudzień": 12
-          };
+
           rows.sort((a, b) => {
             const aText = a.children[columnIndex].innerText;
             const bText = b.children[columnIndex].innerText;
 
             const isNumber = !isNaN(aText) && !isNaN(bText);
-            if (monthOrder[aText.toLowerCase()] && monthOrder[bText.toLowerCase()]) {
-              return asc
-                ? monthOrder[aText.toLowerCase()] - monthOrder[bText.toLowerCase()]
-                : monthOrder[bText.toLowerCase()] - monthOrder[aText.toLowerCase()];
-            }
-
             return asc
               ? (isNumber ? aText - bText : aText.localeCompare(bText))
               : (isNumber ? bText - aText : bText.localeCompare(aText));
