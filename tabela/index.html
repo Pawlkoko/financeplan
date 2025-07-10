@@ -156,7 +156,7 @@
 
       // Zaczekaj, aż DataTable wyrenderuje pasek narzędzi
       setTimeout(() => {
-        const toolsContainer = document.querySelector('.dataTable-top');
+        const toolsContainer = document.getElementById('searchInput').parentElement;
         if (toolsContainer) {
           const filtersHTML = `
       <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-left: 10px;">
