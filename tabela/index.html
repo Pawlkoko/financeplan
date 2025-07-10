@@ -20,32 +20,63 @@
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.png" rel="apple-touch-icon">
   <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #121212;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+
     #tabelawrapper {
       overflow-x: auto;
       padding: 10px;
     }
 
     table {
-      border-collapse: collapse;
       width: 100%;
-      font-family: sans-serif;
-      font-size: 14px;
+      border-collapse: collapse;
+      background-color: #1e1e1e;
+      color: white;
     }
 
     th,
     td {
       padding: 12px;
-      border: 1px solid #ddd;
+      border-bottom: 1px solid #cfcfcf;
+      /* tylko poziome linie */
+      border-left: none;
+      border-right: none;
       text-align: left;
     }
 
     th {
-      background-color: #f7f7f7;
+      background-color: #2c2c2c;
       cursor: pointer;
     }
 
     tr:hover {
-      background-color: #f1f1f1;
+      background-color: #333;
+    }
+
+    input#searchInput {
+      font-family: 'Montserrat', sans-serif;
+      padding: 6px 10px;
+      margin-bottom: 15px;
+      width: 100%;
+      max-width: 300px;
+      background-color: #2c2c2c;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 4px;
+    }
+
+    .sorted-asc::after {
+      content: " ▲";
+    }
+
+    .sorted-desc::after {
+      content: " ▼";
     }
   </style>
 </head>
