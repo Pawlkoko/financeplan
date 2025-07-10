@@ -151,6 +151,70 @@
         console.error("Błąd ładowania tabeli:", err);
         document.getElementById("tabelawrapper").innerText = "Błąd ładowania danych.";
       }
+      // Po załadowaniu tabeli:
+      const datatable = new simpleDatatables.DataTable("#tabela");
+
+      // Zaczekaj, aż DataTable wyrenderuje pasek narzędzi
+      setTimeout(() => {
+        const toolsContainer = document.querySelector('.dataTable-top');
+        if (toolsContainer) {
+          const filtersHTML = `
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-left: 10px;">
+        <select id="yearFilter">
+          <option value="">Wszystkie lata</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+        </select>
+        <select id="monthFilter">
+          <option value="">Wszystkie miesiące</option>
+          <option value="-01-">Styczeń</option>
+          <option value="-02-">Luty</option>
+          <option value="-03-">Marzec</option>
+          <option value="-04-">Kwiecień</option>
+          <option value="-05-">Maj</option>
+          <option value="-06-">Czerwiec</option>
+          <option value="-07-">Lipiec</option>
+          <option value="-08-">Sierpień</option>
+          <option value="-09-">Wrzesień</option>
+          <option value="-10-">Październik</option>
+          <option value="-11-">Listopad</option>
+          <option value="-12-">Grudzień</option>
+        </select>
+        <select id="categoryFilter">
+          <option value="">Wszystkie kategorie</option>
+          <option value="Ubrania">Ubrania</option>
+          <option value="Jedzenie">Jedzenie</option>
+          <option value="Elektronika">Elektronika</option>
+        </select>
+      </div>
+    `;
+          toolsContainer.insertAdjacentHTML('beforeend', filtersHTML);
+
+          // Obsługa filtrowania
+          document.querySelectorAll('#yearFilter, #monthFilter, #categoryFilter').forEach(el => {
+            el.addEventListener('change', filterTable);
+          });
+        }
+      }, 300); // lekki delay żeby mieć pewność że .dataTable-top już istnieje
+
+      // Funkcja do filtrowania
+      function filterTable() {
+        const year = document.getElementById("yearFilter").value;
+        const month = document.getElementById("monthFilter").value;
+        const category = document.getElementById("categoryFilter").value;
+        const rows = document.querySelectorAll("#tabela tbody tr");
+
+        rows.forEach(row => {
+          const date = row.cells[1].textContent;
+          const cat = row.cells[3].textContent;
+
+          const matchesYear = !year || date.includes(year);
+          const matchesMonth = !month || date.includes(month);
+          const matchesCategory = !category || cat === category;
+
+          row.style.display = (matchesYear && matchesMonth && matchesCategory) ? "" : "none";
+        });
+      }
     }
   </script>
   <script>
