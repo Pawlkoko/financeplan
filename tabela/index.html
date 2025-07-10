@@ -131,7 +131,7 @@
         if (!wrapper) throw new Error("Brak diva #tabelawrapper");
 
         // Generowanie tabeli
-        let html = "<table><thead><tr>";
+        let html = "<table id='tabela'><thead><tr>";
         for (const key of Object.keys(data[0])) {
           html += `<th>${key}</th>`;
         }
