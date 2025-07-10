@@ -29,7 +29,7 @@
   <div class="loginwrapper">
     <div class="loginandtextwrapper">
       <div class="logowanieprawawrapper">
-        <div id="tabelawrapper"></div>
+        <div id=tabelawrapper class="tabelawrapper"></div>
         <div class="backbuttonwrapper">
           <a href="https://financeplan-topaz.vercel.app/" class="link-block w-inline-block"><img
               src="images/arrow-white-finapla.svg" loading="lazy" width="8" alt="">
@@ -49,6 +49,8 @@
     });
 
     async function loadTableData() {
+      console.log("START"); // Czy kod się w ogóle uruchamia?
+      console.log("URL:", window.location.href);
       const urlParams = new URLSearchParams(window.location.search);
       const userId = urlParams.get("user_id");
 
@@ -58,7 +60,8 @@
       }
 
       try {
-        const url = `https://pawelko.app.n8n.cloud/webhook/get-table?table=Wydatki${userId}&format=json`;
+        const url = `https://pawelko.app.n8n.cloud/webhook-test/get-table?table=Wydatki${userId}&format=json`;
+        console.log("Wysyłam zapytanie:", url);
         const response = await fetch(url);
         const data = await response.json();
 
