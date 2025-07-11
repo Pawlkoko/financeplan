@@ -274,8 +274,8 @@
         const hiddenCols = ['user_id', 'ItemID'];
 
         let html = "<table id='tabela'><thead><tr>";
-        const visibleKeys = Object.keys(data[0]).filter(key => !hiddenCols.includes(key));
-        for (const key of visibleKeys) {
+        const desiredOrder = ['Data', 'Godzina', 'Kategoria', 'Opis', 'Cena'];
+        const visibleKeys = desiredOrder.filter(key => key in data[0]); for (const key of visibleKeys) {
           html += `<th>${key}</th>`;
         }
         html += "</tr></thead><tbody>";
