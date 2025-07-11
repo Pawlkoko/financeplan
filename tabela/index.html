@@ -281,8 +281,8 @@
     async function loadTableData() {
       console.log("START"); // Czy kod się w ogóle uruchamia?
       console.log("URL:", window.location.href);
-      const urlParams = new URLSearchParams(window.location.search);
-      const userId = urlParams.get("user_id");
+      const userId = session.user.id;
+
 
       if (!userId) {
         document.getElementById("tabelawrapper").innerText = "Brak user_id w URL";
