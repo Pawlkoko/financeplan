@@ -295,7 +295,9 @@
         const hiddenCols = ['user_id', 'ItemID'];
         let html = "<table id='tabela'><thead><tr>";
         const desiredOrder = ['Data', 'Godzina', 'Kategoria', 'Opis', 'Cena'];
-        const visibleKeys = desiredOrder.filter(key => key in data[0]);
+        console.log("Odebrane dane:", data);
+        console.log("Dostępne klucze:", Object.keys(data[0]));
+        const visibleKeys = desiredOrder.filter(key => data[0].hasOwnProperty(key));
         for (const key of visibleKeys) {
           html += `<th>${key}</th>`;
         }
@@ -402,7 +404,7 @@
         });
       });
     }
-    document.getElementById("searchInput").addEventListener("input", function () {
+    document.getElementById("search").addEventListener("input", function () {
       const filter = this.value.toLowerCase();
       const rows = document.querySelectorAll("table tbody tr");
       rows.forEach(row => {
