@@ -233,16 +233,19 @@
         if (!wrapper) throw new Error("Brak diva #tabelawrapper");
 
         // Generowanie tabeli
+        const hiddenCols = ['user_id', 'ItemID'];
+
         let html = "<table id='tabela'><thead><tr>";
-        for (const key of Object.keys(data[0])) {
+        const visibleKeys = Object.keys(data[0]).filter(key => !hiddenCols.includes(key));
+        for (const key of visibleKeys) {
           html += `<th>${key}</th>`;
         }
         html += "</tr></thead><tbody>";
 
         for (const row of data) {
           html += "<tr>";
-          for (const cell of Object.values(row)) {
-            html += `<td>${cell}</td>`;
+          for (const key of visibleKeys) {
+            html += `<td>${row[key]}</td>`;
           }
           html += "</tr>";
         }
