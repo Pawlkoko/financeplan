@@ -2,7 +2,7 @@
   justify-content: center;
   align-items: center;
   width: auto;
-  height: 90vh;
+  min-height: 90vh;
   margin-right: 0;
   padding-right: 0;
   display: flex;
@@ -314,7 +314,8 @@
   display: flex;
 }
 
-.text-block-8, .text-block-9 {
+.text-block-8,
+.text-block-9 {
   color: #fff;
 }
 
@@ -731,6 +732,8 @@
   }
 }
 
-#w-node-b39f9473-83c2-a751-e656-9f88be66437c-ea336026, #w-node-b39f9473-83c2-a751-e656-9f88be664383-ea336026, #w-node-b39f9473-83c2-a751-e656-9f88be66438c-ea336026 {
+#w-node-b39f9473-83c2-a751-e656-9f88be66437c-ea336026,
+#w-node-b39f9473-83c2-a751-e656-9f88be664383-ea336026,
+#w-node-b39f9473-83c2-a751-e656-9f88be66438c-ea336026 {
   grid-area: span 1 / span 1 / span 1 / span 1;
 }
