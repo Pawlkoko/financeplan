@@ -242,9 +242,16 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
     );
     async function checkSession() {
-      const { data: { session } } = await supabase.auth.getSession();
+      let session = null;
+      for (let i = 0; i < 10; i++) {
+        const result = await supabase.auth.getSession();
+        session = result.data.session;
+        if (session) break;
+        await new Promise(resolve => setTimeout(resolve, 200)); // czekaj 200ms
+      }
 
       if (!session) {
+        console.error("Brak sesji po 2 sekundach, przekierowuję...");
         window.location.href = "https://financeplan-topaz.vercel.app/logowanie/index.html";
         return;
       }
@@ -262,7 +269,7 @@
         });
       }
 
-      // Wywołaj ładowanie tabeli na podstawie user_id
+      // Wywołaj ładowanie tabeli z user ID
       loadTableData(session.user.id);
     }
 
@@ -413,6 +420,8 @@
       });
     });
   </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" defer></script>
 </body>
 
 </html>
