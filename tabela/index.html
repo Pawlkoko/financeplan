@@ -283,7 +283,7 @@
       }
 
       try {
-        const url = `https://pawelko.app.n8n.cloud/webhook/get-table?table=${userId}&format=json`;
+        const url = `https://pawelko.app.n8n.cloud/webhook-test/get-table?user_id=${userId}&format=json`;
         console.log("Wysyłam zapytanie:", url);
 
         const response = await fetch(url);
