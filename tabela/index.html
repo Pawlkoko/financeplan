@@ -236,45 +236,6 @@
     crossorigin="anonymous"></script>
   <script src="js/webflow.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    const supabase = supabase.createClient(
-      'https://vptpascqhmpmgnufevks.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
-    );
-    async function checkSession() {
-      let session = null;
-      for (let i = 0; i < 10; i++) {
-        const result = await supabase.auth.getSession();
-        session = result.data.session;
-        if (session) break;
-        await new Promise(resolve => setTimeout(resolve, 200)); // czekaj 200ms
-      }
-
-      if (!session) {
-        console.error("Brak sesji po 2 sekundach, przekierowuję...");
-        window.location.href = "https://financeplan-topaz.vercel.app/logowanie/index.html";
-        return;
-      }
-
-      // Ustaw e-mail usera w navbarze
-      const emailDisplay = document.querySelector(".text-block-3");
-      if (emailDisplay) emailDisplay.textContent = session.user.email;
-
-      // Obsługa guzika wyloguj
-      const logoutBtn = document.querySelector(".w-button");
-      if (logoutBtn) {
-        logoutBtn.addEventListener("click", async () => {
-          await supabase.auth.signOut();
-          window.location.href = "https://financeplan-topaz.vercel.app/logowanie/index.html";
-        });
-      }
-
-      // Wywołaj ładowanie tabeli z user ID
-      loadTableData(session.user.id);
-    }
-
-    checkSession();
-  </script>
 
 
 
@@ -422,6 +383,46 @@
   </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" />
   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" defer></script>
+  <script>
+    const supabase = supabase.createClient(
+      'https://vptpascqhmpmgnufevks.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
+    );
+    async function checkSession() {
+      let session = null;
+      for (let i = 0; i < 10; i++) {
+        const result = await supabase.auth.getSession();
+        session = result.data.session;
+        if (session) break;
+        await new Promise(resolve => setTimeout(resolve, 200)); // czekaj 200ms
+      }
+
+      if (!session) {
+        console.error("Brak sesji po 2 sekundach, przekierowuję...");
+        window.location.href = "https://financeplan-topaz.vercel.app/logowanie/index.html";
+        return;
+      }
+
+      // Ustaw e-mail usera w navbarze
+      const emailDisplay = document.querySelector(".text-block-3");
+      if (emailDisplay) emailDisplay.textContent = session.user.email;
+
+      // Obsługa guzika wyloguj
+      const logoutBtn = document.querySelector(".w-button");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+          await supabase.auth.signOut();
+          window.location.href = "https://financeplan-topaz.vercel.app/logowanie/index.html";
+        });
+      }
+
+      // Wywołaj ładowanie tabeli z user ID
+      loadTableData(session.user.id);
+    }
+
+    checkSession();
+  </script>
+
 </body>
 
 </html>
