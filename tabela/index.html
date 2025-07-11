@@ -241,7 +241,6 @@
       'https://vptpascqhmpmgnufevks.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwdHBhc2NxaG1wbWdudWZldmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTcwNDEsImV4cCI6MjA2MzIzMzA0MX0.5Vtk65gjiUG0VrBqbukwikF02SX5z55xV-Ag3U4CGp0'
     );
-
     async function checkSession() {
       const { data: { session } } = await supabase.auth.getSession();
 
@@ -259,55 +258,48 @@
       if (logoutBtn) {
         logoutBtn.addEventListener("click", async () => {
           await supabase.auth.signOut();
-          window.location.href = "https://financeplan-topaz.vercel.app/logowanie/index.html"; // lub inny redirect po wylogowaniu
+          window.location.href = "https://financeplan-topaz.vercel.app/logowanie/index.html";
         });
       }
 
-      // Przekazanie user_id jako ?user_id= do URL (jeśli nie istnieje)
-      const currentParams = new URLSearchParams(window.location.search);
-      if (!currentParams.get("user_id")) {
-        currentParams.set("user_id", session.user.id);
-        window.location.search = currentParams.toString();
-      }
+      // Wywołaj ładowanie tabeli na podstawie user_id
+      loadTableData(session.user.id);
     }
 
     checkSession();
   </script>
+
+
+
+
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      loadTableData();
-    });
-
-    async function loadTableData() {
-      console.log("START"); // Czy kod się w ogóle uruchamia?
-      console.log("URL:", window.location.href);
-      const userId = session.user.id;
-
+    async function loadTableData(userId) {
+      console.log("START");
+      console.log("userId:", userId);
 
       if (!userId) {
-        document.getElementById("tabelawrapper").innerText = "Brak user_id w URL";
+        document.getElementById("tabelawrapper").innerText = "Brak user_id";
         return;
       }
 
       try {
         const url = `https://pawelko.app.n8n.cloud/webhook/get-table?table=${userId}&format=json`;
         console.log("Wysyłam zapytanie:", url);
+
         const response = await fetch(url);
         const data = await response.json();
 
         const wrapper = document.getElementById("tabelawrapper");
         if (!wrapper) throw new Error("Brak diva #tabelawrapper");
 
-        // Generowanie tabeli
         const hiddenCols = ['user_id', 'ItemID'];
-
         let html = "<table id='tabela'><thead><tr>";
         const desiredOrder = ['Data', 'Godzina', 'Kategoria', 'Opis', 'Cena'];
-        const visibleKeys = desiredOrder.filter(key => key in data[0]); for (const key of visibleKeys) {
+        const visibleKeys = desiredOrder.filter(key => key in data[0]);
+        for (const key of visibleKeys) {
           html += `<th>${key}</th>`;
         }
         html += "</tr></thead><tbody>";
-
         for (const row of data) {
           html += "<tr>";
           for (const key of visibleKeys) {
@@ -322,96 +314,48 @@
         console.error("Błąd ładowania tabeli:", err);
         document.getElementById("tabelawrapper").innerText = "Błąd ładowania danych.";
       }
-      // Po załadowaniu tabeli:
+
       const datatable = new simpleDatatables.DataTable("#tabela");
-      // Czekamy aż datatable wyrenderuje DOM
       setTimeout(() => {
         const toolsContainer = document.querySelector('.dataTable-top');
-
         if (toolsContainer && !document.querySelector('#yearFilter')) {
           const filtersHTML = `
-      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-left: 10px;">
-        <select id="yearFilter">
-          <option value="">Wszystkie lata</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-        </select>
-        <select id="monthFilter">
-          <option value="">Wszystkie miesiące</option>
-          <option value="-01-">Styczeń</option>
-          <option value="-02-">Luty</option>
-          <option value="-03-">Marzec</option>
-          <option value="-04-">Kwiecień</option>
-          <option value="-05-">Maj</option>
-          <option value="-06-">Czerwiec</option>
-          <option value="-07-">Lipiec</option>
-          <option value="-08-">Sierpień</option>
-          <option value="-09-">Wrzesień</option>
-          <option value="-10-">Październik</option>
-          <option value="-11-">Listopad</option>
-          <option value="-12-">Grudzień</option>
-        </select>
-        <select id="categoryFilter">
-          <option value="">Wszystkie kategorie</option>
-          <option value="Ubrania">Ubrania</option>
-          <option value="Jedzenie">Jedzenie</option>
-          <option value="Elektronika">Elektronika</option>
-        </select>
-      </div>
-    `;
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-left: 10px;">
+            <select id="yearFilter">
+              <option value="">Wszystkie lata</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+            </select>
+            <select id="monthFilter">
+              <option value="">Wszystkie miesiące</option>
+              <option value="-01-">Styczeń</option>
+              <option value="-02-">Luty</option>
+              <option value="-03-">Marzec</option>
+              <option value="-04-">Kwiecień</option>
+              <option value="-05-">Maj</option>
+              <option value="-06-">Czerwiec</option>
+              <option value="-07-">Lipiec</option>
+              <option value="-08-">Sierpień</option>
+              <option value="-09-">Wrzesień</option>
+              <option value="-10-">Październik</option>
+              <option value="-11-">Listopad</option>
+              <option value="-12-">Grudzień</option>
+            </select>
+            <select id="categoryFilter">
+              <option value="">Wszystkie kategorie</option>
+              <option value="Ubrania">Ubrania</option>
+              <option value="Jedzenie">Jedzenie</option>
+              <option value="Elektronika">Elektronika</option>
+            </select>
+          </div>
+        `;
           toolsContainer.insertAdjacentHTML('beforeend', filtersHTML);
-
-          // Obsługa filtrowania
           document.querySelectorAll('#yearFilter, #monthFilter, #categoryFilter').forEach(el => {
             el.addEventListener('change', filterTable);
           });
         }
       }, 300);
 
-      // Zaczekaj, aż DataTable wyrenderuje pasek narzędzi
-      setTimeout(() => {
-        const toolsContainer = document.getElementById('searchInput').parentElement;
-        if (toolsContainer) {
-          const filtersHTML = `
-      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-left: 10px;">
-        <select id="yearFilter">
-          <option value="">Wszystkie lata</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-        </select>
-        <select id="monthFilter">
-          <option value="">Wszystkie miesiące</option>
-          <option value="-01-">Styczeń</option>
-          <option value="-02-">Luty</option>
-          <option value="-03-">Marzec</option>
-          <option value="-04-">Kwiecień</option>
-          <option value="-05-">Maj</option>
-          <option value="-06-">Czerwiec</option>
-          <option value="-07-">Lipiec</option>
-          <option value="-08-">Sierpień</option>
-          <option value="-09-">Wrzesień</option>
-          <option value="-10-">Październik</option>
-          <option value="-11-">Listopad</option>
-          <option value="-12-">Grudzień</option>
-        </select>
-        <select id="categoryFilter">
-          <option value="">Wszystkie kategorie</option>
-          <option value="Ubrania">Ubrania</option>
-          <option value="Jedzenie">Jedzenie</option>
-          <option value="Elektronika">Elektronika</option>
-        </select>
-      </div>
-    `;
-          toolsContainer.insertAdjacentHTML('beforeend', filtersHTML);
-
-          // Obsługa filtrowania
-          document.querySelectorAll('#yearFilter, #monthFilter, #categoryFilter').forEach(el => {
-            el.addEventListener('change', filterTable);
-          });
-        }
-      }, 300); // lekki delay żeby mieć pewność że .dataTable-top już istnieje
-
-      // Funkcja do filtrowania
       function filterTable() {
         const year = document.getElementById("yearFilter").value;
         const month = document.getElementById("monthFilter").value;
