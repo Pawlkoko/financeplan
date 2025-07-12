@@ -396,42 +396,43 @@
         document.getElementById("tabelawrapper").innerText = "Błąd ładowania danych.";
       }
 
-      const datatable = datatable = new simpleDatatables.DataTable("#tabela", {
-
-        labels: {
-          placeholder: "Szukaj...",
-          perPage: "Wierszy na stronę",
-          noRows: "Brak danych",
-          info: "Wyświetlam {start}–{end} z {rows}",
-          loading: "Ładowanie...",
-          infoFiltered: "(przefiltrowano z {rows})"
-        }
-      });
-
-      function aktualizujSumę(datatable) {
-        const widoczneWiersze = datatable.activeRows;
-        let suma = 0;
-
-        widoczneWiersze.forEach((row) => {
-          const komórki = row.cells;
-          const kwotaStr = komórki[2]?.innerText?.replace(/[^\d.-]+/g, '') || "0"; // kolumna nr 3
-          const kwota = parseFloat(kwotaStr);
-          if (!isNaN(kwota)) {
-            suma += kwota;
+      const datatable = datatable = requestAnimationFrame(() => {
+        datatable = new simpleDatatables.DataTable("#tabela", {
+          labels: {
+            placeholder: "Szukaj...",
+            perPage: "Wierszy na stronę",
+            noRows: "Brak danych",
+            info: "Wyświetlam {start}–{end} z {rows}",
+            loading: "Ładowanie...",
+            infoFiltered: "(przefiltrowano z {rows})"
           }
         });
 
-        const sumaEl = document.getElementById("suma-wydatkow");
-        if (sumaEl) {
-          sumaEl.innerText = `Suma wyświetlanych wydatków: ${suma.toFixed(2)} zł`;
+        function aktualizujSumę() {
+          const widoczneWiersze = datatable.activeRows;
+          let suma = 0;
+
+          widoczneWiersze.forEach((row) => {
+            const komórki = row.cells;
+            const kwotaStr = komórki[2]?.innerText?.replace(/[^\d.-]+/g, '') || "0";
+            const kwota = parseFloat(kwotaStr);
+            if (!isNaN(kwota)) {
+              suma += kwota;
+            }
+          });
+
+          const sumaEl = document.getElementById("suma-wydatkow");
+          if (sumaEl) {
+            sumaEl.innerText = `Suma wyświetlanych wydatków: ${suma.toFixed(2)} zł`;
+          }
         }
-      }
 
-      aktualizujSumę(datatable);
-
-      datatable.on("datatable.page", () => aktualizujSumę(datatable));
-      datatable.on("datatable.search", () => aktualizujSumę(datatable));
-      datatable.on("datatable.sort", () => aktualizujSumę(datatable));
+        // 🔁 Wywołuj sumę po każdej akcji:
+        aktualizujSumę();
+        datatable.on("datatable.page", () => aktualizujSumę());
+        datatable.on("datatable.search", () => aktualizujSumę());
+        datatable.on("datatable.sort", () => aktualizujSumę());
+      });
       requestAnimationFrame(() => {
         const select = document.querySelector(".dataTable-selector");
         if (select) {
