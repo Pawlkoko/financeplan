@@ -121,6 +121,34 @@
       color: black !important;
       font-weight: bold !important;
     }
+
+    .dataTable-selector {
+      background-color: #1e1e1e !important;
+      color: white !important;
+      border: 1px solid #888 !important;
+      border-radius: 6px !important;
+      padding: 6px 12px !important;
+      font-size: 14px !important;
+      font-family: 'Montserrat', sans-serif !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    .dataTable-selector:hover {
+      background-color: #2a2a2a !important;
+      border-color: #d0ef0b !important;
+      color: #d0ef0b !important;
+    }
+
+    /* Zmieniamy kolor labela „Wierszy na stronę” */
+    .dataTable-wrapper label {
+      color: white !important;
+      font-family: 'Montserrat', sans-serif !important;
+      font-size: 14px !important;
+    }
   </style>
 </head>
 
@@ -331,6 +359,7 @@
       const datatable = new simpleDatatables.DataTable("#tabela");
       setTimeout(() => {
         const toolsContainer = document.querySelector('.dataTable-top');
+
         if (toolsContainer && !document.querySelector('#yearFilter')) {
           const filtersHTML = `
           <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-left: 10px;">
@@ -361,6 +390,14 @@
               <option value="Elektronika">Elektronika</option>
             </select>
           </div>
+            labels: {
+    placeholder: "Szukaj...",
+    perPage: "Wierszy na stronę",
+    noRows: "Brak danych",
+    info: "Wyświetlam {start}–{end} z {rows}",
+    loading: "Ładowanie...",
+    infoFiltered: "(przefiltrowano z {rows})"
+  }
         `;
           toolsContainer.insertAdjacentHTML('beforeend', filtersHTML);
           document.querySelectorAll('#yearFilter, #monthFilter, #categoryFilter').forEach(el => {
