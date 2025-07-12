@@ -20,6 +20,39 @@
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.png" rel="apple-touch-icon">
   <style>
+    /* FULL RESET SELECTA */
+    .dataTable-selector {
+      background-color: #1e1e1e !important;
+      color: white !important;
+      border: 1px solid white !important;
+      border-radius: 8px !important;
+      padding: 6px 12px !important;
+      font-family: 'Montserrat', sans-serif !important;
+      font-size: 14px !important;
+      outline: none !important;
+      box-shadow: none !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+    }
+
+    /* Strzałka własna (opcjonalnie, jeśli użyjesz tła z SVG) */
+    .dataTable-selector::after {
+      content: '▼';
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    /* Hover */
+    .dataTable-selector:hover {
+      background-color: #2a2a2a !important;
+      color: #d0ef0b !important;
+      border-color: #d0ef0b !important;
+    }
+
     .dataTable-selector {
       background-color: solid !important;
       color: #474747 !important;
@@ -356,8 +389,16 @@
         document.getElementById("tabelawrapper").innerText = "Błąd ładowania danych.";
       }
 
-      const datatable = new simpleDatatables.DataTable("#tabela");
-      setTimeout(() => {
+      new simpleDatatables.DataTable("#tabela", {
+        labels: {
+          placeholder: "Szukaj...",
+          perPage: "Wierszy na stronę",
+          noRows: "Brak danych",
+          info: "Wyświetlam {start}–{end} z {rows}",
+          loading: "Ładowanie...",
+          infoFiltered: "(przefiltrowano z {rows})"
+        }
+      }); setTimeout(() => {
         const toolsContainer = document.querySelector('.dataTable-top');
 
         if (toolsContainer && !document.querySelector('#yearFilter')) {
