@@ -20,43 +20,37 @@
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.png" rel="apple-touch-icon">
   <style>
-    body {
-      background: transparent;
-      color: white;
-    }
-
-    #tabelawrapper table {
-      background-color: transparent;
-      color: white;
-      border-collapse: collapse;
+    #tabelawrapper {
+      display: block !important;
+      overflow-x: auto;
+      padding: 20px;
       width: 100%;
     }
 
-    #tabelawrapper th,
-    #tabelawrapper td {
+    #tabela {
+      width: 100% !important;
+      table-layout: auto !important;
+      border-collapse: collapse;
+    }
+
+    #tabela th,
+    #tabela td {
+      min-width: 120px;
+      padding: 12px;
+      color: #eee;
       border-bottom: 1px solid white;
-      background-color: transparent;
-      color: #f0f0f0;
+      word-break: break-word;
+      white-space: normal;
+      text-align: left;
     }
 
-    #tabelawrapper th {
+    #tabela th {
+      color: white;
       font-weight: bold;
-      cursor: pointer;
     }
 
-    #tabelawrapper tr:hover {
+    #tabela tr:hover {
       background-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .dataTable-top,
-    .dataTable-pagination {
-      color: white;
-    }
-
-    .dataTable-top input {
-      background-color: transparent;
-      color: white;
-      border: 1px solid white;
     }
   </style>
 </head>
