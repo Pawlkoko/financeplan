@@ -21,62 +21,42 @@
   <link href="images/webclip.png" rel="apple-touch-icon">
   <style>
     body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #121212;
+      background: transparent;
       color: white;
-      margin: 0;
-      padding: 20px;
     }
 
-    #tabelawrapper {
-      overflow-x: auto;
-      padding: 10px;
-    }
-
-    table {
-      width: 100%;
+    #tabelawrapper table {
+      background-color: transparent;
+      color: white;
       border-collapse: collapse;
-      background-color: #1e1e1e;
-      color: white;
+      width: 100%;
     }
 
-    th,
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #cfcfcf;
-      /* tylko poziome linie */
-      border-left: none;
-      border-right: none;
-      text-align: left;
+    #tabelawrapper th,
+    #tabelawrapper td {
+      border-bottom: 1px solid white;
+      background-color: transparent;
+      color: #f0f0f0;
     }
 
-    th {
-      background-color: #2c2c2c;
+    #tabelawrapper th {
+      font-weight: bold;
       cursor: pointer;
     }
 
-    tr:hover {
-      background-color: #333;
+    #tabelawrapper tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
     }
 
-    input#searchInput {
-      font-family: 'Montserrat', sans-serif;
-      padding: 6px 10px;
-      margin-bottom: 15px;
-      width: 100%;
-      max-width: 300px;
-      background-color: #2c2c2c;
+    .dataTable-top,
+    .dataTable-pagination {
       color: white;
-      border: 1px solid #444;
-      border-radius: 4px;
     }
 
-    .sorted-asc::after {
-      content: " ▲";
-    }
-
-    .sorted-desc::after {
-      content: " ▼";
+    .dataTable-top input {
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
     }
   </style>
 </head>
