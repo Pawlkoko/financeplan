@@ -47,16 +47,13 @@
   background-color: #4e4e4e73;
   border: 1px solid #616161;
   border-radius: 10px;
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  min-width: auto;
-  max-width: none;
   height: auto;
   min-height: 250px;
   margin-bottom: 10px;
   padding: 20px 60px 40px;
-  display: flex;
+  display: block;
+  overflow-x: auto;
 }
 
 .logowanieprawawrapper {
