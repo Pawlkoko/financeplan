@@ -396,7 +396,8 @@
         document.getElementById("tabelawrapper").innerText = "Błąd ładowania danych.";
       }
 
-      const datatable = new simpleDatatables.DataTable("#tabela", {
+      const datatable = datatable = new simpleDatatables.DataTable("#tabela", {
+
         labels: {
           placeholder: "Szukaj...",
           perPage: "Wierszy na stronę",
@@ -568,7 +569,7 @@
           window.location.href = "https://financeplan-topaz.vercel.app/logowanie/index.html";
         });
       }
-
+      let datatable;
       loadTableData(session.user.id);
     }
 
