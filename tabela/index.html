@@ -22,18 +22,25 @@
   <style>
     /* FULL RESET SELECTA */
     .dataTable-selector {
-      background-color: #1e1e1e !important;
+      background-color: transparent !important;
       color: white !important;
       border: 1px solid white !important;
       border-radius: 8px !important;
       padding: 6px 12px !important;
       font-family: 'Montserrat', sans-serif !important;
       font-size: 14px !important;
-      outline: none !important;
-      box-shadow: none !important;
+      cursor: pointer !important;
       appearance: none !important;
       -webkit-appearance: none !important;
       -moz-appearance: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    .dataTable-selector:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      color: #d0ef0b !important;
+      border-color: #d0ef0b !important;
     }
 
     /* Strzałka własna (opcjonalnie, jeśli użyjesz tła z SVG) */
@@ -430,16 +437,7 @@
               <option value="Jedzenie">Jedzenie</option>
               <option value="Elektronika">Elektronika</option>
             </select>
-          </div>
-            labels: {
-    placeholder: "Szukaj...",
-    perPage: "Wierszy na stronę",
-    noRows: "Brak danych",
-    info: "Wyświetlam {start}–{end} z {rows}",
-    loading: "Ładowanie...",
-    infoFiltered: "(przefiltrowano z {rows})"
-  }
-        `;
+          </div>`;
           toolsContainer.insertAdjacentHTML('beforeend', filtersHTML);
           document.querySelectorAll('#yearFilter, #monthFilter, #categoryFilter').forEach(el => {
             el.addEventListener('change', filterTable);
@@ -544,35 +542,7 @@
 
 
   </script>
-  <script>
-    // Po załadowaniu tabeli i wyrenderowaniu przez bibliotekę
-    const forceStyle = () => {
-      const select = document.querySelector(".dataTable-selector");
-      if (select) {
-        select.style.backgroundColor = "#1e1e1e";
-        select.style.color = "white";
-        select.style.border = "1px solid white";
-        select.style.borderRadius = "8px";
-        select.style.padding = "6px 12px";
-        select.style.fontSize = "14px";
-        select.style.fontFamily = "Montserrat, sans-serif";
-        select.style.outline = "none";
-        select.style.boxShadow = "none";
-        select.style.appearance = "none";
-        select.style.webkitAppearance = "none";
-        select.style.mozAppearance = "none";
-      }
-    };
 
-    // Czekamy aż pojawi się .dataTable-selector
-    const waitForSelect = setInterval(() => {
-      const el = document.querySelector(".dataTable-selector");
-      if (el) {
-        forceStyle();
-        clearInterval(waitForSelect);
-      }
-    }, 100);
-  </script>
 </body>
 
 </html>
