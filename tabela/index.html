@@ -542,37 +542,37 @@
 
     checkSession();
 
-    <script>
-  // Po załadowaniu tabeli i wyrenderowaniu przez bibliotekę
-  const forceStyle = () => {
-    const select = document.querySelector(".dataTable-selector");
+
+  </script>
+  <script>
+    // Po załadowaniu tabeli i wyrenderowaniu przez bibliotekę
+    const forceStyle = () => {
+      const select = document.querySelector(".dataTable-selector");
       if (select) {
         select.style.backgroundColor = "#1e1e1e";
-      select.style.color = "white";
-      select.style.border = "1px solid white";
-      select.style.borderRadius = "8px";
-      select.style.padding = "6px 12px";
-      select.style.fontSize = "14px";
-      select.style.fontFamily = "Montserrat, sans-serif";
-      select.style.outline = "none";
-      select.style.boxShadow = "none";
-      select.style.appearance = "none";
-      select.style.webkitAppearance = "none";
-      select.style.mozAppearance = "none";
-    }
-  };
+        select.style.color = "white";
+        select.style.border = "1px solid white";
+        select.style.borderRadius = "8px";
+        select.style.padding = "6px 12px";
+        select.style.fontSize = "14px";
+        select.style.fontFamily = "Montserrat, sans-serif";
+        select.style.outline = "none";
+        select.style.boxShadow = "none";
+        select.style.appearance = "none";
+        select.style.webkitAppearance = "none";
+        select.style.mozAppearance = "none";
+      }
+    };
 
-  // Czekamy aż pojawi się .dataTable-selector
-  const waitForSelect = setInterval(() => {
-    const el = document.querySelector(".dataTable-selector");
+    // Czekamy aż pojawi się .dataTable-selector
+    const waitForSelect = setInterval(() => {
+      const el = document.querySelector(".dataTable-selector");
       if (el) {
         forceStyle();
-      clearInterval(waitForSelect);
-    }
-  }, 100);
+        clearInterval(waitForSelect);
+      }
+    }, 100);
   </script>
-  </script>
-
 </body>
 
 </html>
