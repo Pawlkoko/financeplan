@@ -410,17 +410,24 @@
 
           rows.forEach((row) => {
             const cells = row.cells;
-            // Find the "Cena" column - we'll look for it by header text if needed
+            // Szukamy kolumny z ceną
             let priceCell;
             for (let i = 0; i < cells.length; i++) {
-              if (cells[i].textContent.includes("zł") || !isNaN(parseFloat(cells[i].textContent.replace(/[^\d.-]/g, '')))) {
+              const text = cells[i].textContent.trim();
+              // Szukamy tekstu zawierającego liczby z przecinkami
+              if (text.match(/[\d,]+/)) {
                 priceCell = cells[i];
                 break;
               }
             }
 
             if (priceCell) {
-              const kwotaStr = priceCell.textContent.replace(/[^\d.-]+/g, '') || "0";
+              // Zamieniamy przecinek na kropkę i usuwamy wszystkie znaki niebędące cyframi lub kropką
+              const kwotaStr = priceCell.textContent
+                .replace(/\./g, '')  // Usuwamy kropki tysięcy (np. 1.000,50 -> 1000,50)
+                .replace(',', '.')    // Zamieniamy przecinek na kropkę (1000,50 -> 1000.50)
+                .replace(/[^\d.-]/g, ''); // Usuwamy wszystko co nie jest cyfrą, kropką lub minusem
+
               const kwota = parseFloat(kwotaStr);
               if (!isNaN(kwota)) {
                 suma += kwota;
@@ -430,7 +437,8 @@
 
           const sumaEl = document.getElementById("suma-wydatkow");
           if (sumaEl) {
-            sumaEl.innerText = `${suma.toFixed(2)} zł`;
+            // Formatujemy wynik z przecinkiem jako separatorem dziesiętnym
+            sumaEl.innerText = `${suma.toFixed(2).replace('.', ',')} zł`;
           }
         }
 
