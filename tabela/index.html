@@ -492,6 +492,8 @@
           const matchesCategory = !category || cat === category;
 
           row.style.display = (matchesYear && matchesMonth && matchesCategory) ? "" : "none";
+          aktualizujSumę(datatable);
+
         });
       }
     }
