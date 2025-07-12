@@ -391,104 +391,61 @@
         html += "</tbody></table>";
         wrapper.innerHTML = html;
         makeTableSortable(wrapper.querySelector("table"));
+
+        // Initialize DataTable
+        let datatable = new simpleDatatables.DataTable("#tabela", {
+          labels: {
+            placeholder: "Szukaj...",
+            perPage: "Wierszy na stronę",
+            noRows: "Brak danych",
+            info: "Wyświetlam {start}–{end} z {rows}",
+            loading: "Ładowanie...",
+            infoFiltered: "(przefiltrowano z {rows})"
+          }
+        });
+
+        function aktualizujSumę() {
+          const rows = document.querySelectorAll("#tabela tbody tr:not([style*='display: none'])");
+          let suma = 0;
+
+          rows.forEach((row) => {
+            const cells = row.cells;
+            // Find the "Cena" column - we'll look for it by header text if needed
+            let priceCell;
+            for (let i = 0; i < cells.length; i++) {
+              if (cells[i].textContent.includes("zł") || !isNaN(parseFloat(cells[i].textContent.replace(/[^\d.-]/g, '')))) {
+                priceCell = cells[i];
+                break;
+              }
+            }
+
+            if (priceCell) {
+              const kwotaStr = priceCell.textContent.replace(/[^\d.-]+/g, '') || "0";
+              const kwota = parseFloat(kwotaStr);
+              if (!isNaN(kwota)) {
+                suma += kwota;
+              }
+            }
+          });
+
+          const sumaEl = document.getElementById("suma-wydatkow");
+          if (sumaEl) {
+            sumaEl.innerText = `${suma.toFixed(2)} zł`;
+          }
+        }
+
+        // Initial calculation
+        aktualizujSumę();
+
+        // Update sum on table events
+        datatable.on("datatable.page", () => aktualizujSumę());
+        datatable.on("datatable.search", () => aktualizujSumę());
+        datatable.on("datatable.sort", () => aktualizujSumę());
+        datatable.on("datatable.perpage", () => aktualizujSumę());
+
       } catch (err) {
         console.error("Błąd ładowania tabeli:", err);
         document.getElementById("tabelawrapper").innerText = "Błąd ładowania danych.";
-      }
-
-      const datatable = datatable = requestAnimationFrame(() => {
-        datatable = new simpleDatatables.DataTable("#tabela", {
-          labels: {
-            placeholder: "Szukaj...",
-            perPage: "Wierszy na stronę",
-            noRows: "Brak danych",
-            info: "Wyświetlam {start}–{end} z {rows}",
-            loading: "Ładowanie...",
-            infoFiltered: "(przefiltrowano z {rows})"
-          }
-        });
-
-        function aktualizujSumę() {
-          const widoczneWiersze = datatable.activeRows;
-          let suma = 0;
-
-          widoczneWiersze.forEach((row) => {
-            const komórki = row.cells;
-            const kwotaStr = komórki[2]?.innerText?.replace(/[^\d.-]+/g, '') || "0";
-            const kwota = parseFloat(kwotaStr);
-            if (!isNaN(kwota)) {
-              suma += kwota;
-            }
-          });
-
-          const sumaEl = document.getElementById("suma-wydatkow");
-          if (sumaEl) {
-            sumaEl.innerText = `Suma wyświetlanych wydatków: ${suma.toFixed(2)} zł`;
-          }
-        }
-
-        // 🔁 Wywołuj sumę po każdej akcji:
-        aktualizujSumę();
-        datatable.on("datatable.page", () => aktualizujSumę());
-        datatable.on("datatable.search", () => aktualizujSumę());
-        datatable.on("datatable.sort", () => aktualizujSumę());
-      });
-      requestAnimationFrame(() => {
-        datatable = new simpleDatatables.DataTable("#tabela", {
-          labels: {
-            placeholder: "Szukaj...",
-            perPage: "Wierszy na stronę",
-            noRows: "Brak danych",
-            info: "Wyświetlam {start}–{end} z {rows}",
-            loading: "Ładowanie...",
-            infoFiltered: "(przefiltrowano z {rows})"
-          }
-        });
-
-        function aktualizujSumę() {
-          const widoczneWiersze = datatable.activeRows;
-          let suma = 0;
-
-          widoczneWiersze.forEach((row) => {
-            const komórki = row.cells;
-            const kwotaStr = komórki[2]?.innerText?.replace(/[^\d.-]+/g, '') || "0";
-            const kwota = parseFloat(kwotaStr);
-            if (!isNaN(kwota)) {
-              suma += kwota;
-            }
-          });
-
-          const sumaEl = document.getElementById("suma-wydatkow");
-          if (sumaEl) {
-            sumaEl.innerText = `Suma wyświetlanych wydatków: ${suma.toFixed(2)} zł`;
-          }
-        }
-
-        // 🔁 Wywołuj sumę po każdej akcji:
-        aktualizujSumę();
-        datatable.on("datatable.page", () => aktualizujSumę());
-        datatable.on("datatable.search", () => aktualizujSumę());
-        datatable.on("datatable.sort", () => aktualizujSumę());
-      });
-
-      function filterTable() {
-        const year = document.getElementById("yearFilter").value;
-        const month = document.getElementById("monthFilter").value;
-        const category = document.getElementById("categoryFilter").value;
-        const rows = document.querySelectorAll("#tabela tbody tr");
-
-        rows.forEach(row => {
-          const date = row.cells[1].textContent;
-          const cat = row.cells[3].textContent;
-
-          const matchesYear = !year || date.includes(year);
-          const matchesMonth = !month || date.includes(month);
-          const matchesCategory = !category || cat === category;
-
-          row.style.display = (matchesYear && matchesMonth && matchesCategory) ? "" : "none";
-          aktualizujSumę(datatable);
-
-        });
       }
     }
   </script>
