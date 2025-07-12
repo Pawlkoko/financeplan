@@ -434,50 +434,42 @@
         datatable.on("datatable.sort", () => aktualizujSumę());
       });
       requestAnimationFrame(() => {
-        const select = document.querySelector(".dataTable-selector");
-        if (select) {
-          select.classList.add("dataTable-selector"); // upewniamy się że klasa istnieje
-        }
-      });
-      setTimeout(() => {
-        const toolsContainer = document.querySelector('.dataTable-top');
+        datatable = new simpleDatatables.DataTable("#tabela", {
+          labels: {
+            placeholder: "Szukaj...",
+            perPage: "Wierszy na stronę",
+            noRows: "Brak danych",
+            info: "Wyświetlam {start}–{end} z {rows}",
+            loading: "Ładowanie...",
+            infoFiltered: "(przefiltrowano z {rows})"
+          }
+        });
 
-        if (toolsContainer && !document.querySelector('#yearFilter')) {
-          const filtersHTML = `
-          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-left: 10px;">
-            <select id="yearFilter">
-              <option value="">Wszystkie lata</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-            </select>
-            <select id="monthFilter">
-              <option value="">Wszystkie miesiące</option>
-              <option value="-01-">Styczeń</option>
-              <option value="-02-">Luty</option>
-              <option value="-03-">Marzec</option>
-              <option value="-04-">Kwiecień</option>
-              <option value="-05-">Maj</option>
-              <option value="-06-">Czerwiec</option>
-              <option value="-07-">Lipiec</option>
-              <option value="-08-">Sierpień</option>
-              <option value="-09-">Wrzesień</option>
-              <option value="-10-">Październik</option>
-              <option value="-11-">Listopad</option>
-              <option value="-12-">Grudzień</option>
-            </select>
-            <select id="categoryFilter">
-              <option value="">Wszystkie kategorie</option>
-              <option value="Ubrania">Ubrania</option>
-              <option value="Jedzenie">Jedzenie</option>
-              <option value="Elektronika">Elektronika</option>
-            </select>
-          </div>`;
-          toolsContainer.insertAdjacentHTML('beforeend', filtersHTML);
-          document.querySelectorAll('#yearFilter, #monthFilter, #categoryFilter').forEach(el => {
-            el.addEventListener('change', filterTable);
+        function aktualizujSumę() {
+          const widoczneWiersze = datatable.activeRows;
+          let suma = 0;
+
+          widoczneWiersze.forEach((row) => {
+            const komórki = row.cells;
+            const kwotaStr = komórki[2]?.innerText?.replace(/[^\d.-]+/g, '') || "0";
+            const kwota = parseFloat(kwotaStr);
+            if (!isNaN(kwota)) {
+              suma += kwota;
+            }
           });
+
+          const sumaEl = document.getElementById("suma-wydatkow");
+          if (sumaEl) {
+            sumaEl.innerText = `Suma wyświetlanych wydatków: ${suma.toFixed(2)} zł`;
+          }
         }
-      }, 300);
+
+        // 🔁 Wywołuj sumę po każdej akcji:
+        aktualizujSumę();
+        datatable.on("datatable.page", () => aktualizujSumę());
+        datatable.on("datatable.search", () => aktualizujSumę());
+        datatable.on("datatable.sort", () => aktualizujSumę());
+      });
 
       function filterTable() {
         const year = document.getElementById("yearFilter").value;
