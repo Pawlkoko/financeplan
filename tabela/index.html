@@ -405,7 +405,14 @@
           loading: "Ładowanie...",
           infoFiltered: "(przefiltrowano z {rows})"
         }
-      }); setTimeout(() => {
+      });
+      requestAnimationFrame(() => {
+        const select = document.querySelector(".dataTable-selector");
+        if (select) {
+          select.classList.add("dataTable-selector"); // upewniamy się że klasa istnieje
+        }
+      });
+      setTimeout(() => {
         const toolsContainer = document.querySelector('.dataTable-top');
 
         if (toolsContainer && !document.querySelector('#yearFilter')) {
@@ -542,7 +549,29 @@
 
 
   </script>
+  <style>
+    .dataTable-selector {
+      background-color: #1a1a1a !important;
+      color: white !important;
+      border: 1px solid white !important;
+      border-radius: 6px !important;
+      padding: 6px 12px !important;
+      font-size: 14px !important;
+      font-family: 'Montserrat', sans-serif !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      cursor: pointer !important;
+    }
 
+    .dataTable-selector:hover {
+      background-color: #2a2a2a !important;
+      border-color: #d0ef0b !important;
+      color: #d0ef0b !important;
+    }
+  </style>
 </body>
 
 </html>
