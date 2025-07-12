@@ -291,7 +291,7 @@
         <div class="div-block-19">
           <section class="sumawrapper">
             <div class="sumatext1">Suma wyświetlanych wydatków: </div>
-            <div class="sumatext2"> 8 920 pln</div>
+            <div id="suma-wydatkow" class="sumatext2"> 8 920 pln</div>
           </section>
         </div>
         <div id="tabelawrapper" class="tabelawrapper"></div>
@@ -396,7 +396,7 @@
         document.getElementById("tabelawrapper").innerText = "Błąd ładowania danych.";
       }
 
-      new simpleDatatables.DataTable("#tabela", {
+      const datatable = new simpleDatatables.DataTable("#tabela", {
         labels: {
           placeholder: "Szukaj...",
           perPage: "Wierszy na stronę",
@@ -406,6 +406,31 @@
           infoFiltered: "(przefiltrowano z {rows})"
         }
       });
+
+      function aktualizujSumę(datatable) {
+        const widoczneWiersze = datatable.activeRows;
+        let suma = 0;
+
+        widoczneWiersze.forEach((row) => {
+          const komórki = row.cells;
+          const kwotaStr = komórki[2]?.innerText?.replace(/[^\d.-]+/g, '') || "0"; // kolumna nr 3
+          const kwota = parseFloat(kwotaStr);
+          if (!isNaN(kwota)) {
+            suma += kwota;
+          }
+        });
+
+        const sumaEl = document.getElementById("suma-wydatkow");
+        if (sumaEl) {
+          sumaEl.innerText = `Suma wyświetlanych wydatków: ${suma.toFixed(2)} zł`;
+        }
+      }
+
+      aktualizujSumę(datatable);
+
+      datatable.on("datatable.page", () => aktualizujSumę(datatable));
+      datatable.on("datatable.search", () => aktualizujSumę(datatable));
+      datatable.on("datatable.sort", () => aktualizujSumę(datatable));
       requestAnimationFrame(() => {
         const select = document.querySelector(".dataTable-selector");
         if (select) {
