@@ -10,6 +10,11 @@
   position: relative;
 }
 
+.search-input {
+  color: white !important;
+  caret-color: white !important;
+}
+
 #tabelawrapper table td,
 #tabelawrapper table th {
   height: 48px;
