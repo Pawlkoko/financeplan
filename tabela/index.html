@@ -203,11 +203,12 @@
       }
   </style>
 
+
 <style>
 body {
   background-color: #121212;
   color: white;
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
 }
 
 .searchbarwrapper {
@@ -227,6 +228,7 @@ body {
   background-color: #1e1e1e;
   padding: 20px;
   border-radius: 10px;
+  width: 100%;
   overflow-x: auto;
 }
 
@@ -234,17 +236,22 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 10px;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
 }
 
 .dataTable-table th,
 .dataTable-table td {
-  padding: 10px;
+  padding: 12px 16px;
   border-bottom: 1px solid #444;
   text-align: left;
 }
 
 .dataTable-table tr:nth-child(even) {
   background-color: #2a2a2a;
+}
+
+.dataTable-table tr:nth-child(odd) {
+  background-color: #1e1e1e;
 }
 
 .dataTable-pagination a {
@@ -545,7 +552,7 @@ select {
       });
     });
   </script>
-<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
 <script>
     const { createClient } = supabase;
@@ -683,5 +690,5 @@ select {
     }
     }
   </style>
-</link></body>
+</body>
 </html>
