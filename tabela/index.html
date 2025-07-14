@@ -656,6 +656,31 @@
       }, 500); // 0.5s – pozwala DataTables wygenerować element
     });
   </script>
+  <script>
+    const killDataTableSearch = () => {
+      const searchBar = document.querySelector('.dataTable-search');
+      if (searchBar) {
+        searchBar.remove(); // 💣 możesz też zamienić na: searchBar.style.display = "none";
+        console.log('🔪 Usunięto .dataTable-search');
+      }
+    };
+
+    // Początek obserwatora DOM
+    const observer = new MutationObserver(() => {
+      killDataTableSearch();
+    });
+
+    // Obserwuj całe body na zmiany
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    // Na wypadek, gdyby już istniało – sprawdź od razu
+    window.addEventListener('load', () => {
+      killDataTableSearch();
+    });
+  </script>
 </body>
 
 </html>
