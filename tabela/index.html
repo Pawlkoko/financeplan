@@ -202,6 +202,79 @@
         border: 1px solid #888 !important;
       }
   </style>
+
+<style>
+body {
+  background-color: #121212;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.searchbarwrapper {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  background-color: #2a2a2a;
+  color: white;
+  border: 1px solid #555;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.dataTable-wrapper {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.dataTable-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.dataTable-table th,
+.dataTable-table td {
+  padding: 10px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+.dataTable-table tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
+
+.dataTable-pagination a {
+  color: white;
+  padding: 6px 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  margin: 0 2px;
+  text-decoration: none;
+}
+
+.dataTable-pagination a.active {
+  background-color: #3a3a3a;
+  border-color: #666;
+}
+
+.dataTable-selector,
+select {
+  background-color: #2a2a2a;
+  color: white;
+  border: 1px solid #444;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.dataTable-info {
+  color: #bbb;
+  font-size: 0.9em;
+}
+</style>
 </head>
 <body class="body">
 <section class="header_section">
@@ -380,6 +453,7 @@
 
         // Init DataTable
         let datatable = new simpleDatatables.DataTable("#tabela", {
+          searchable: false,
           labels: {
             placeholder: "Szukaj...",
             perPage: "Wierszy na stronę",
