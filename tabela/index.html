@@ -543,6 +543,54 @@
 
 
   </script>
+
+  <script>
+    document.querySelectorAll('.w-dropdown').forEach(dropdown => {
+      const toggle = dropdown.querySelector('.w-dropdown-toggle');
+      const list = dropdown.querySelector('.w-dropdown-list');
+
+      toggle.addEventListener('click', () => {
+        list.classList.toggle('w--open');
+      });
+
+      // zamykanie po kliknięciu poza
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+          list.classList.remove('w--open');
+        }
+      });
+    });
+  </script>
+  <script>
+    document.querySelectorAll('.dropdown-link-3').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const selectedMonth = link.textContent.trim(); // np. "Lipiec"
+
+        // przemapuj na numer miesiąca
+        const miesiace = {
+          Styczeń: "01", Luty: "02", Marzec: "03", Kwiecień: "04",
+          Maj: "05", Czerwiec: "06", Lipiec: "07", Sierpień: "08",
+          Wrzesień: "09", Październik: "10", Listopad: "11", Grudzień: "12"
+        };
+
+        const monthNumber = miesiace[selectedMonth];
+
+        document.querySelectorAll("#tabela tbody tr").forEach(row => {
+          const dataCell = row.cells[0]; // Zakładam, że Data jest w pierwszej kolumnie
+          if (dataCell && dataCell.textContent.includes(`-${monthNumber}-`)) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+
+        // zaktualizuj sumę po filtrze
+        const event = new Event('datatable.search');
+        document.querySelector("#tabela").dispatchEvent(event);
+      });
+    });
+  </script>
   <style>
     .dataTable-selector {
       background-color: #1a1a1a !important;
@@ -591,6 +639,7 @@
       border-color: #d0ef0b !important;
     }
   </style>
+
 </body>
 
 </html>
