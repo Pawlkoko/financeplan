@@ -644,12 +644,23 @@
       font-weight: bold;
       border-color: #d0ef0b !important;
     }
-
-    .dataTable-top .dataTable-search {
-      display: none !important;
-    }
   </style>
+  <script>
+    // Poczekaj aż cała strona się załaduje
+    window.addEventListener('load', () => {
+      const observer = new MutationObserver(() => {
+        const searchBar = document.querySelector('.dataTable-search');
+        if (searchBar) {
+          searchBar.style.display = 'none';
+        }
+      });
 
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    });
+  </script>
 </body>
 
 </html>
