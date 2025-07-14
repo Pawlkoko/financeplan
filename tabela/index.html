@@ -646,19 +646,14 @@
     }
   </style>
   <script>
-    // Poczekaj aż cała strona się załaduje
-    window.addEventListener('load', () => {
-      const observer = new MutationObserver(() => {
-        const searchBar = document.querySelector('.dataTable-search');
-        if (searchBar) {
-          searchBar.style.display = 'none';
+    // Poczekaj aż tabela się załaduje i ukryj defaultową wyszukiwarkę DataTables
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const dtSearch = document.querySelector('.dataTable-search');
+        if (dtSearch) {
+          dtSearch.style.display = 'none';
         }
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
+      }, 500); // 0.5s – pozwala DataTables wygenerować element
     });
   </script>
 </body>
