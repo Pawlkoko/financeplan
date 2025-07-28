@@ -513,14 +513,6 @@
       } catch (err) {
         console.error("Błąd JS przy UsesCount:", err);
       }
-      // 🔗 Pokazuj sekcję wydatków tylko jeśli istnieje spreadsheet_link
-      const openSheetBtn = document.getElementById("open-sheet-button");
-      const wydatkiWrapper = document.getElementById("wydatki-wrapper");
-
-      if (wydatkiWrapper) {
-        wydatkiWrapper.classList.add("hidden"); // ukryj domyślnie
-      }
-
       try {
         const { data, error } = await supabase
           .from("user_config")
